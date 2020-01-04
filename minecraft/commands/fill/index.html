@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>/fill</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+<p><b>/fill</b> is a command when it fills coordinate to coordinate. so say I got (0 4 0) to (21 16 7) I would do<b>/fill 0 4 0 21 16 7 dimon</b> that would fill every thing in between those coordinate in any block i want so i want the coordinate and tnt i would do <b>/fill 0 4 0 21 16 7 tnt</b>
+<p>
+
+<br>
+
+
+<br>
+
+<input type="text" value="/fill " id="myInput">
+<button onclick="myFunction()">Copy </button>
+
+
+<script>
+function myFunction() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+  alert("Copied the text: " + copyText.value);
+}
+
+
+
+</script>
+
