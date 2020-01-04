@@ -88,8 +88,14 @@
 ​
 <br>
 <input type="text" value="/fill give @p barrier" id="myInput15">
-<button onclick="myFunction14()">Copy </button>
+<button onclick="myFunction15()">Copy </button>
 
+  <br>
+<input type="text" value="/spawnpointbarrier" id="myInput16">
+<button onclick="myFunction16()">Copy </button>
+  
+  
+  
 <script>
 function myFunction() {
   var copyText = document.getElementById("myInput");
@@ -208,6 +214,15 @@ function myFunction15() {
   document.execCommand("copy");
   alert("Copied the text: " + copyText15.value);
 }
+  
+  function myFunction16() {
+  var copyText16 = document.getElementById("myInput13");
+  copyText16.select();
+  copyText16.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+  alert("Copied the text: " + copyText16.value);
+}
+
 
 </script>
 <br><br>
