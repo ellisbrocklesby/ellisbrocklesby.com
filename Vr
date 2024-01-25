@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Your VR environment -->
+
+      <!-- Add your grabbable shapes here -->
+      <a-entity class="grabbable" geometry="primitive: box" position="-1 1.6 -3"></a-entity>
+      <a-entity class="grabbable" geometry="primitive: sphere" position="0 1.6 -3"></a-entity>
+      <a-entity class="grabbable" geometry="primitive: cylinder" position="1 1.6 -3"></a-entity>
+
+      <!-- Oculus Quest 2 controllers -->
+      <a-entity oculus-touch-controls="hand: right"></a-entity>
+      <a-entity oculus-touch-controls="hand: left"></a-entity>
+
+      <script>
+        AFRAME.registerComponent('grab', {
+          init: function () {
+            this.grabbed = false;
+            this.controller = document.querySelector('[oculus-touch-controls]');
+            this.el.addEventListener('triggerdown', this.grab.bind(this));
+            this.el.addEventListener('triggerup', this.throw.bind(this));
+          },
+          grab: function () {
+            if (!this.grabbed) {
+              this.grabbed = true;
+              this.controller.object3D.attach(this.el.object3D);
+            }
+          },
+          throw: function () {
+            if (this.grabbed) {
+              this.grabbed = false;
+              this.controller.object3D.attach(null);
+
+              // Apply a velocity to simulate throwing
+              const velocity = this.controller.getAttribute('velocity');
+              this.el.setAttribute('velocity', velocity);
+            }
+          }
+        });
+
+        // Make grabbable objects interactive
+        document.querySelectorAll('.grabbable').forEach(el => {
+          el.setAttribute('grab', '');
+        });
+      </script>
+    </a-scene>
+  </body>
+</html>
