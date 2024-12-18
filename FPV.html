@@ -33,9 +33,14 @@
             text-align: center;
             animation: fadeIn 3s ease-in-out;
         }
-        .drones-section, .certificates-section, .social-media-section {
+        .drones-section {
             padding: 20px;
-            animation: fadeIn 4s ease-in-out;
+            text-align: center;
+        }
+        .drones-container {
+            display: inline-block;
+            width: 70%;
+            max-width: 600px;
         }
         .drone {
             display: flex;
@@ -54,7 +59,11 @@
             width: 100px;
             height: 100px;
             object-fit: cover;
-            margin-right: 20px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .drone-info {
+            text-align: left;
         }
         .drone-info h3 {
             margin: 0 0 10px;
@@ -73,8 +82,9 @@
             background-color: #0056b3;
             transform: translateY(-3px);
         }
-        .certificates-section h2 {
-            margin-bottom: 20px;
+        .certificates-section, .social-media-section {
+            padding: 20px;
+            text-align: center;
         }
         .certificates img {
             width: 300px;
@@ -84,10 +94,6 @@
         }
         .certificates img:hover {
             transform: scale(1.1);
-        }
-        .social-media-section {
-            text-align: center;
-            padding: 20px;
         }
         .social-media-section a {
             margin: 0 10px;
@@ -112,71 +118,4 @@
             margin-top: 20px;
             animation: fadeIn 5s ease-in-out;
         }
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <h1>FPV Broccoli</h1>
-    <p>Ellis Brocklesby</p>
-    <p>Freestyle, Racing, and Minor Cinematics</p>
-</header>
-
-<div class="description">
-    <p>Hi, I am Ellis Brocklesby. I'm a young FPV drone pilot who enjoys the hobby.</p>
-</div>
-
-<section class="drones-section">
-    <h2>My Drones</h2>
-
-    <!-- Example drone entry -->
-    <div class="drone">
-        <img src="https://th.bing.com/th/id/OIP.1Pc3v_T_in8crkkf1KY_2gHaHT?rs=1&pid=ImgDetMain" alt="Drone Image"> 
-        <div class="drone-info">
-            <h3>Jhonny 5"</h3>
-            <p>Type: Freestyle</p>
-            <a href="drone-info.html">More Info</a>
-        </div>
-    </div>
-
-    <!-- Add more drone entries -->
-
-</section>
-
-<section class="certificates-section">
-    <center>
-    <h2>Certificates and Licenses</h2>
-    <div class="certificates">
-        <img src="https://i.postimg.cc/brVztBRF/Drone-licence.png" alt="Certificate"> 
-        <!-- Add more certificate images -->
-        </center>
-    </div>
-</section>
-
-<section class="social-media-section">
-    <h2>Follow Me</h2>
-    <a href="https://www.youtube.com/@FPV_Broccoli" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
-    </a>
-    <a href="https://www.instagram.com/fpv_broccoli/" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-    </a>
-</section>
-
-<footer>
-    <p>&copy; 2024 FPV Broccoli. All rights reserved.</p>
-</footer>
-
-</body>
-</html>
+        /* 
