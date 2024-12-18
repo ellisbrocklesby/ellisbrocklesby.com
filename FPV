@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellis Brocklesby - FPV Drone Pilot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #222;
+            color: white;
+            padding: 20px 10px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        header p {
+            font-size: 1.2rem;
+            margin: 5px 0 0;
+        }
+        .description {
+            padding: 20px;
+            text-align: center;
+        }
+        .drones-section {
+            padding: 20px;
+        }
+        .drone {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .drone img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        .drone-info {
+            flex: 1;
+        }
+        .drone-info h3 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+        }
+        .drone-info p {
+            margin: 0 0 5px;
+        }
+        .drone-info a {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .certificates-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .certificates-section h2 {
+            margin-bottom: 20px;
+        }
+        .certificates img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+        }
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Ellis Brocklesby</h1>
+    <p>Freestyle, Racing, and Minor Cinematics</p>
+</header>
+
+<div class="description">
+    <p>Hi, I am Ellis Brocklesby. I'm a young FPV drone pilot who enjoys the hobby.</p>
+</div>
+
+<section class="drones-section">
+    <h2>My Drones</h2>
+
+    <!-- Example drone entry -->
+    <div class="drone">
+        <img src="placeholder-drone.jpg" alt="Drone Image"> <!-- Replace 'placeholder-drone.jpg' with actual image -->
+        <div class="drone-info">
+            <h3>Drone Name</h3>
+            <p>Type: Racing</p>
+            <a href="drone-info.html">Drone Info</a> <!-- Replace 'drone-info.html' with the actual link -->
+        </div>
+    </div>
+
+    <!-- Add more drone entries like the one above -->
+
+</section>
+
+<section class="certificates-section">
+    <h2>Certificates and Licenses</h2>
+    <div class="certificates">
+        <img src="certificate-placeholder.jpg" alt="Certificate"> <!-- Replace 'certificate-placeholder.jpg' with actual image -->
+        <img src="license-placeholder.jpg" alt="License"> <!-- Replace 'license-placeholder.jpg' with actual image -->
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 Ellis Brocklesby. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
