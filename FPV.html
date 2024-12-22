@@ -6,7 +6,7 @@
     <title>FPV Broccoli - FPV Drone Pilot</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
@@ -14,72 +14,90 @@
             overflow-x: hidden;
         }
         header {
-            background-color: #222;
-            color: white;
-            padding: 20px 10px;
+            background: linear-gradient(90deg, #222, #444);
+            color: #fff;
+            padding: 30px 10px;
             text-align: center;
             animation: fadeIn 2s ease-in-out;
         }
         header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 3rem;
+            letter-spacing: 2px;
         }
         header p {
-            font-size: 1rem;
-            margin: 5px 0 0;
+            font-size: 1.2rem;
+            margin: 10px 0 0;
         }
         .description {
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
             animation: fadeIn 3s ease-in-out;
         }
         .drones-section, .certificates-section, .social-media-section {
-            padding: 20px;
+            padding: 40px 20px;
             animation: fadeIn 4s ease-in-out;
+        }
+        .drones-section h2, .certificates-section h2, .social-media-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #007BFF;
         }
         .drone {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin: 20px auto;
+            max-width: 800px;
             background: #fff;
-            padding: 10px;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .drone:hover {
-            transform: scale(1.03);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
         .drone img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             margin-right: 20px;
+            border-radius: 6px;
         }
         .drone-info h3 {
             margin: 0 0 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+        }
+        .drone-info p {
+            margin: 0 0 15px;
+            color: #555;
         }
         .drone-info a {
-            display: inline-block;
             text-decoration: none;
             color: white;
             background-color: #007BFF;
-            padding: 5px 10px;
+            padding: 10px 20px;
             border-radius: 4px;
+            font-weight: bold;
             transition: background-color 0.3s, transform 0.2s;
         }
         .drone-info a:hover {
             background-color: #0056b3;
             transform: translateY(-3px);
         }
-        .certificates-section h2 {
-            margin-bottom: 20px;
+        .certificates {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
         }
         .certificates img {
             width: 300px;
             height: auto;
-            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
         .certificates img:hover {
@@ -87,12 +105,10 @@
         }
         .social-media-section {
             text-align: center;
-            padding: 20px;
         }
         .social-media-section a {
-            margin: 0 10px;
+            margin: 0 15px;
             text-decoration: none;
-            color: inherit;
             display: inline-block;
             transition: transform 0.3s;
         }
@@ -100,18 +116,24 @@
             transform: scale(1.2);
         }
         .social-media-section img {
-            width: 40px;
-            height: 40px;
-            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         footer {
             background-color: #222;
-            color: white;
+            color: #fff;
             text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
+            padding: 20px 0;
+            margin-top: 40px;
             animation: fadeIn 5s ease-in-out;
         }
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from {
@@ -139,8 +161,7 @@
 
 <section class="drones-section">
     <h2>My Drones</h2>
-
-    <!-- Example drone entry -->
+    
     <div class="drone">
         <img src="https://th.bing.com/th/id/OIP.1Pc3v_T_in8crkkf1KY_2gHaHT?rs=1&pid=ImgDetMain" alt="Drone Image"> 
         <div class="drone-info">
@@ -150,27 +171,21 @@
         </div>
     </div>
 
-    <!-- Add more drone entries -->
-
- <div class="drone">
+    <div class="drone">
         <img src="https://th.bing.com/th/id/OIP.1Pc3v_T_in8crkkf1KY_2gHaHT?rs=1&pid=ImgDetMain" alt="Drone Image"> 
         <div class="drone-info">
             <h3>JayJay 5"</h3>
-            <p>Type: racing</p>
+            <p>Type: Racing</p>
             <a href="drone-info.html">More Info</a>
         </div>
     </div>
-    
-
 </section>
 
 <section class="certificates-section">
-    <center>
     <h2>Certificates and Licenses</h2>
     <div class="certificates">
         <img src="https://ibb.co/BcLx1v9" alt="Certificate"> 
         <!-- Add more certificate images -->
-        </center>
     </div>
 </section>
 
@@ -189,4 +204,4 @@
 </footer>
 
 </body>
-</html>            
+</html>
