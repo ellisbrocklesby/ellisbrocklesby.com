@@ -76,6 +76,11 @@
             }
         });
 
+        function removeEmojis(text) {
+            // Regex to remove emojis
+            return text.replace(/[^\w\s.,?!'-]/g, '');
+        }
+
         function generateChat() {
             const scriptText = document.getElementById("script").value;
             const chatBox = document.getElementById("chatBox");
@@ -100,7 +105,10 @@
                 chatBox.appendChild(div);
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                const utterance = new SpeechSynthesisUtterance(message);
+                // Remove emojis from message for speech synthesis
+                const cleanMessage = removeEmojis(message);
+
+                const utterance = new SpeechSynthesisUtterance(cleanMessage);
                 const voiceOption = person === "Person1" ? document.getElementById("voicePerson1").value : document.getElementById("voicePerson2").value;
                 utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === voiceOption);
 
@@ -136,7 +144,7 @@
             } else if (category === "relationshipTroubles") {
                 prompt = `Generate a conversation between Person1 and Person2 who are experiencing relationship troubles. The conversation should include misunderstandings, emotional moments, and an attempt to work through their issues. Example: \nPerson1: "I don't think you care about me anymore." \nPerson2: "That's not true, I just don't know how to express it.The covo is over text"`;
             } else if (category === "accident") {
-                prompt = `Generate a conversation where Person1 is explaining a funny or strange accident to Person2. The accident should be absurd and over-exaggerated for comedic effect. Example: \nPerson1: "So, I tripped over a banana peel and landed in a cake." \nPerson2: "How does that even happen? "`;
+                prompt = `Generate a conversation where Person1 is explaining a funny or strange accident to Person2. The accident should be absurd and over-exaggerated for comedic effect. Example: \nPerson1: "So, I tripped over a banana peel and landed in a cake." \nPerson2: "How does that even happen?"`;
             } else if (category === "jokes") {
                 prompt = `Generate a conversation where Person1 and Person2 tell jokes to each other. The jokes should range from corny to clever, with a good balance of humor. Example: \nPerson1: "Why don’t skeletons fight each other?" \nPerson2: "I don’t know, why?" \nPerson1: "Because they don’t have the guts!"`;
             }
