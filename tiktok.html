@@ -3,70 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT Prompt Generator</title>
+    <title>Chat Video Generator</title>
     <style>
-        /* Add your styles here */
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        select, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
+        body { font-family: Arial, sans-serif; background-color: #000; text-align: center; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .contact-info { display: flex; align-items: center; justify-content: center; padding: 10px; background: #F0F0F0; border-radius: 10px; margin-bottom: 10px; }
+        .contact-info img { width: 50px; height: 50px; border-radius: 50%; margin-right: 10px; }
+        .contact-name { font-size: 18px; font-weight: bold; }
+        .chat-box { width: 100%; height: 500px; background: #E5E5EA; border-radius: 10px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; justify-content: flex-start; }
+        .message { max-width: 70%; padding: 10px; margin: 5px; border-radius: 15px; font-size: 16px; line-height: 1.4; display: inline-block; animation: slideIn 0.3s ease-out; }
+        .person1 { background-color: #007AFF; color: white; align-self: flex-end; }
+        .person2 { background-color: #FFFFFF; color: black; align-self: flex-start; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Chat Video Generator</h1>
+        <input type="text" id="contactName" placeholder="Contact Name" />
+        <input type="file" id="contactImage" accept="image/*" />
+        <select id="voicePerson1">
+            <option value="Microsoft Natasha Desktop - English (Australia)">Microsoft Natasha Desktop (Australia)</option>
+            <option value="Microsoft Adam Desktop - English (Australia)">Microsoft Adam Desktop (Australia)</option>
+            <option value="Google UK English Male">Google UK English Male</option>
+            <option value="Google US English">Google US English</option>
+            <option value="Google UK English Female">Google UK English Female</option>
+            <option value="Google US English Female">Google US English Female</option>
+            <option value="Microsoft David Desktop - English (United States)">Microsoft David Desktop</option>
+            <option value="Microsoft Zira Desktop - English (United States)">Microsoft Zira Desktop</option>
+        </select>
+        <select id="voicePerson2">
+            <option value="Microsoft Natasha Desktop - English (Australia)">Microsoft Natasha Desktop (Australia)</option>
+            <option value="Microsoft Adam Desktop - English (Australia)">Microsoft Adam Desktop (Australia)</option>
+            <option value="Google UK English Female">Google UK English Female</option>
+            <option value="Google US English Female">Google US English Female</option>
+            <option value="Google UK English Male">Google UK English Male</option>
+            <option value="Google US English">Google US English</option>
+            <option value="Microsoft David Desktop - English (United States)">Microsoft David Desktop</option>
+            <option value="Microsoft Zira Desktop - English (United States)">Microsoft Zira Desktop</option>
+        </select>
+        <br><br>
+        <textarea id="script" rows="10" cols="40" placeholder="Person1: Hello\nPerson2: Hey"></textarea>
+        <br>
+        <button onclick="generateChat()">Generate Chat</button>
+        <button onclick="generateRandomScript()">Generate Random Script</button>
+        <select id="categoryDropdown">
+            <option value="rizz">Rizz</option>
+            <option value="brainrot">Brainrot</option>
+            <option value="relationshipTroubles">Relationship Troubles</option>
+            <option value="accident">Accident</option>
+            <option value="jokes">Jokes</option>
+        </select>
+        <button onclick="generateChatGPTPrompt()">ChatGPT Generation</button>
+        <h2>Preview</h2>
+        <div class="contact-info" id="contactInfo">
+            <img id="contactPhoto" src="" alt="Profile Picture" style="display: none;">
+            <span class="contact-name" id="contactDisplayName">Contact Name</span>
+        </div>
+        <div class="chat-box" id="chatBox"></div>
+    </div>
 
-<div class="container">
-    <h2>ChatGPT Prompt Generator</h2>
-    <label for="categoryDropdown">Select a category:</label>
-    <select id="categoryDropdown">
-        <option value="rizz">Rizz</option>
-        <option value="brainrot">Brainrot</option>
-        <option value="relationshipTroubles">Relationship Troubles</option>
-        <option value="accident">Accident</option>
-        <!-- Add more categories as needed -->
-    </select>
+    <script>
+        document.getElementById("contactImage").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("contactPhoto").src = e.target.result;
+                    document.getElementById("contactPhoto").style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-    <label for="generatedPrompt">Generated Prompt:</label>
-    <textarea id="generatedPrompt" rows="6" readonly></textarea>
+        function generateChat() {
+            const scriptText = document.getElementById("script").value;
+            const chatBox = document.getElementById("chatBox");
+            const contactName = document.getElementById("contactName").value;
+            document.getElementById("contactDisplayName").innerText = contactName || "Contact Name";
+            chatBox.innerHTML = "";
+            const lines = scriptText.split("\n");
+            let delay = 500;
 
-    <button onclick="generateChatGPTPrompt()">Generate Prompt</button>
-</div>
+            function speakLine(index) {
+                if (index >= lines.length) return;
 
-<script>
-    function generateChatGPTPrompt() {
-        const category = document.getElementById("categoryDropdown").value;
-        let prompt = "";
+                const line = lines[index];
+                const parts = line.split(": ");
+                if (parts.length < 2) return;
 
-        // Determine the structure of the prompt based on the selected category
-        if (category === "rizz") {
-            prompt = `Generate a conversation between Person1 and Person2 where Person1 is trying to impress Person2 with pick-up lines. The conversation should include a mix of successful and failed attempts, and it should be playful and a little cringey. Use emojis for added flavor, making it feel like a casual text conversation. The dialogue should be fun and light-hearted. Structure it like a natural chat with no extra commentary, just the text.`;
-        } else if (category === "brainrot") {
-            prompt = `Generate a strange and funny conversation between Person1 and Person2, with Person1 saying bizarre and nonsensical things. Person2 should try to make sense of it, but the conversation should be surreal and absurd. Emojis should be used to enhance the weirdness and give it a playful tone. The structure should be like a casual chat, with no over-explanation—just the dialogue.`;
-        } else if (category === "relationshipTroubles") {
-            prompt = `Generate a conversation between Person1 and Person2 who are experiencing relationship troubles. The dialogue should include misunderstandings, emotional moments, and a gentle attempt to resolve the issue. Use emojis to convey emotions like confusion, sadness, or reassurance. The conversation should feel natural, like a real text exchange. Structure it simply as text messages between the two.`;
-        } else if (category === "accident") {
-            prompt = `Generate a conversation where Person1 is explaining a funny or strange accident to Person2. The accident should be exaggerated for comedic effect, and the conversation should include humor and disbelief. Emojis should be added to convey the absurdity of the situation. The conversation should feel like a text exchange, simple and entertaining.`;
+                const person = parts[0];
+                const message = parts[1];
+                const div = document.createElement("div");
+                div.classList.add("message", person === "Person1" ? "person1" : "person2");
+                div.innerText = message;
+                chatBox.appendChild(div);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                const utterance = new SpeechSynthesisUtterance(message);
+                const voiceOption = person === "Person1" ? document.getElementById("voicePerson1").value : document.getElementById("voicePerson2").value;
+                utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === voiceOption);
+
+                utterance.onend = function() {
+                    setTimeout(() => speakLine(index + 1), 500);
+                };
+
+                speechSynthesis.speak(utterance);
+            }
+
+            speakLine(0);
         }
 
-        // Set the generated prompt in the textarea
-        document.getElementById("generatedPrompt").value = prompt;
-    }
-</script>
+        function generateRandomScript() {
+            const randomScripts = [
+                "Person1: Hey, how are you?\nPerson2: I'm good, thanks! How about you?\nPerson1: I'm doing great, just enjoying the day.\nPerson2: That's awesome to hear!",
+                "Person1: What did you do this weekend?\nPerson2: I went hiking in the mountains.\nPerson1: Sounds fun! I just stayed home and relaxed.\nPerson2: Sometimes that's the best way to spend the weekend.",
+                "Person1: Have you seen the new movie yet?\nPerson2: Yes, I watched it last night. It was amazing!\nPerson1: I need to check it out. What's it about?\nPerson2: It's a sci-fi thriller with a great plot twist."
+            ];
 
+            const randomScript = randomScripts[Math.floor(Math.random() * randomScripts.length)];
+            document.getElementById("script").value = randomScript;
+        }
+
+        function generateChatGPTPrompt() {
+            const category = document.getElementById("categoryDropdown").value;
+            let prompt = "";
+
+            if (category === "rizz") {
+                prompt = `Generate a funny and awkward conversation where Person1 is trying to impress Person2 with pick-up lines. The lines can either go well or fail horribly. The tone should be playful, a little cringey, and include a mix of good and bad attempts at flirting. Example: \nPerson1: "Are you French? Because Eiffel for you." \nPerson2: *rolls eyes* "That was terrible. The covo is over text"`;
+            } else if (category === "brainrot") {
+                prompt = `Generate a strange, nonsensical conversation between Person1 and Person2. The dialogue should be absurd and almost surreal, with one person saying bizarre things and the other trying to make sense of it. The tone should be confusing but humorous. Example: \nPerson1: "I just saw a purple unicorn juggling pineapples." \nPerson2: "What are you even talking about? The covo is over text"`;
+            } else if (category === "relationshipTroubles") {
+                prompt = `Generate a conversation between Person1 and Person2 who are experiencing relationship troubles. The conversation should include misunderstandings, emotional moments, and an attempt to work through their issues. Example: \nPerson1: "I don't think you care about me anymore." \nPerson2: "That's not true, I just don't know how to express it.The covo is over text"`;
+            } else if (category === "accident") {
+                prompt = `Generate a conversation where Person1 is explaining a funny or strange accident to Person2. The accident should be absurd and over-exaggerated for comedic effect. Example: \nPerson1: "So, I tripped over a banana peel and landed in a cake." \nPerson2: "How does that even happen? "`;
+            } else if (category === "jokes") {
+                prompt = `Generate a conversation where Person1 and Person2 tell jokes to each other. The jokes should range from corny to clever, with a good balance of humor. Example: \nPerson1: "Why don’t skeletons fight each other?" \nPerson2: "I don’t know, why?" \nPerson1: "Because they don’t have the guts!"`;
+            }
+
+            navigator.clipboard.writeText(prompt).then(() => {
+                window.open("https://chat.openai.com/", "_blank");
+            });
+        }
+
+        window.speechSynthesis.onvoiceschanged = function() {
+            const voices = speechSynthesis.getVoices();
+            const voicePerson1 = document.getElementById('voicePerson1');
+            const voicePerson2 = document.getElementById('voicePerson2');
+
+            voices.forEach(voice => {
+                const option1 = document.createElement('option');
+                option1.textContent = voice.name;
+                option1.value = voice.name;
+                voicePerson1.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.textContent = voice.name;
+                option2.value = voice.name;
+                voicePerson2.appendChild(option2);
+            });
+        };
+    </script>
 </body>
 </html>
