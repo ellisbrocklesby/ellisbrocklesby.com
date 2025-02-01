@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Prompt Generator</title>
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>ChatGPT Prompt Generator</h2>
+    <label for="categoryDropdown">Select a category:</label>
+    <select id="categoryDropdown">
+        <option value="rizz">Rizz</option>
+        <option value="brainrot">Brainrot</option>
+        <option value="relationshipTroubles">Relationship Troubles</option>
+        <option value="accident">Accident</option>
+        <!-- Add more categories as needed -->
+    </select>
+
+    <label for="generatedPrompt">Generated Prompt:</label>
+    <textarea id="generatedPrompt" rows="6" readonly></textarea>
+
+    <button onclick="generateChatGPTPrompt()">Generate Prompt</button>
+</div>
+
+<script>
+    function generateChatGPTPrompt() {
+        const category = document.getElementById("categoryDropdown").value;
+        let prompt = "";
+
+        // Determine the structure of the prompt based on the selected category
+        if (category === "rizz") {
+            prompt = `Generate a conversation between Person1 and Person2 where Person1 is trying to impress Person2 with pick-up lines. The conversation should include a mix of successful and failed attempts, and it should be playful and a little cringey. Use emojis for added flavor, making it feel like a casual text conversation. The dialogue should be fun and light-hearted. Structure it like a natural chat with no extra commentary, just the text.`;
+        } else if (category === "brainrot") {
+            prompt = `Generate a strange and funny conversation between Person1 and Person2, with Person1 saying bizarre and nonsensical things. Person2 should try to make sense of it, but the conversation should be surreal and absurd. Emojis should be used to enhance the weirdness and give it a playful tone. The structure should be like a casual chat, with no over-explanation—just the dialogue.`;
+        } else if (category === "relationshipTroubles") {
+            prompt = `Generate a conversation between Person1 and Person2 who are experiencing relationship troubles. The dialogue should include misunderstandings, emotional moments, and a gentle attempt to resolve the issue. Use emojis to convey emotions like confusion, sadness, or reassurance. The conversation should feel natural, like a real text exchange. Structure it simply as text messages between the two.`;
+        } else if (category === "accident") {
+            prompt = `Generate a conversation where Person1 is explaining a funny or strange accident to Person2. The accident should be exaggerated for comedic effect, and the conversation should include humor and disbelief. Emojis should be added to convey the absurdity of the situation. The conversation should feel like a text exchange, simple and entertaining.`;
+        }
+
+        // Set the generated prompt in the textarea
+        document.getElementById("generatedPrompt").value = prompt;
+    }
+</script>
+
+</body>
+</html>
