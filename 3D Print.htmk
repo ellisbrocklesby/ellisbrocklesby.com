@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creality Ender 3 Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .status {
+            font-size: 24px;
+            text-align: center;
+        }
+        .connected {
+            color: green;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+        }
+        .camera {
+            width: 900px;
+            height: 600px;
+            background-color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+        .info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .box {
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            width: 350px;
+            text-align: center;
+            background-color: white;
+        }
+        .upload-box {
+            background-color: #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .progress {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">CREALITY</h1>
+    <p class="status">Ender 3: <span class="connected">Connected</span></p>
+    
+    <div class="container">
+        <div class="camera">Live View of Print</div>
+        <div class="info-container">
+            <div class="box">
+                <div class="upload-box">Drag and drop pre-sliced file or upload</div>
+                <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
+                <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
+                <button class="button" id="start-print">Start Print</button>
+            </div>
+            <div class="box">
+                <p><strong>Time remaining:</strong> <span id="time-remaining">1 hour 53 minutes</span></p>
+                <p><strong>Nozzle temp:</strong> <span id="nozzle-temp">45°C</span></p>
+                <p><strong>Bed temp:</strong> <span id="bed-temp">145°C</span></p>
+                <p class="progress"><span id="progress">45%</span> Print Completion</p>
+                <button class="button" id="pause">Pause</button>
+                <button class="button" id="stop">Stop</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
