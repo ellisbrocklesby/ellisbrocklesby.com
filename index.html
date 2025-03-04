@@ -45,7 +45,7 @@
             background: linear-gradient(135deg, #1e1e1e, #333333);
         }
         header h1 {
-            font-size: 2.5rem; /* Slightly smaller */
+            font-size: 2.5rem;
             margin-bottom: 5px;
         }
         header p {
@@ -56,6 +56,30 @@
             padding: 60px 20px;
             background-color: #1a1a1a;
             margin: 20px 0;
+            border-radius: 10px;
+        }
+        .gallery img {
+            width: 100%;
+            max-width: 500px;
+            margin: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+        .video-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+        }
+        .video-container iframe {
+            width: 400px;
+            height: 225px;
+            flex: none;
+            scroll-snap-align: start;
             border-radius: 10px;
         }
         footer {
@@ -80,14 +104,24 @@
         <section id="fpv">
             <h2>FPV Adventures</h2>
             <p>Explore my FPV journey and check out my YouTube channel!</p>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/SqEwLD0e734" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/your-video-id" allowfullscreen></iframe>
+            </div>
         </section>
         <section id="3d-art">
             <h2>3D Art & Design</h2>
             <p>Passionate about 3D modeling, animation, and digital creativity.</p>
+            <div class="gallery">
+                <img src="https://public-files.gumroad.com/1z3oxca6txmxjaff5jkwfqd5w9pi" alt="3D Render">
+                <img src="Screenshot 2024-09-01 121624.png" alt="3D Work">
+            </div>
+            <p>Follow me on Instagram: <a href="https://www.instagram.com/ellisbrocklesby3d/">@ellisbrocklesby3d</a></p>
         </section>
         <section id="speed-cuber">
             <h2>Speed Cubing</h2>
             <p>Competing and breaking personal records in the world of speed cubing.</p>
+            <p>Learn more about my achievements: <a href="https://www.worldcubeassociation.org/persons/2022HARR08">WCA Profile</a></p>
         </section>
     </div>
     <footer>
