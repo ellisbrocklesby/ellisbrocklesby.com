@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3nohtyP - Reverse Python</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e1e1e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            height: 80vh;
+            gap: 10px;
+        }
+        .editor, .output {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        textarea, pre {
+            flex: 1;
+            font-size: 16px;
+            background-color: #252526;
+            color: #0f0;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 5px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        pre {
+            border-left: 4px solid #0a0;
+        }
+        button {
+            padding: 12px 18px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+        .buttons {
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .generate, .reverse {
+            background-color: #444;
+            color: white;
+        }
+        .generate:hover, .reverse:hover {
+            background-color: #666;
+        }
+        .run {
+            background-color: #0a0;
+            color: white;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+        }
+        .run:hover {
+            background-color: #0c0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+</head>
+<body>
+    <h1>3nohtyP - The Backward Python Editor</h1>
+    <div class="buttons">
+        <button class="generate" onclick="insertExample()">Insert Example Code</button>
+        <button class="reverse" onclick="reverseEditorCode()">Reverse Code</button>
+        <button class="run" onclick="run3nohtyP()">▶</button>
+    </div>
+    <div class="container">
+        <div class="editor">
+            <textarea id="editor" placeholder="Type fully reversed Python here..."></textarea>
+        </div>
+        <div class="output">
+            <pre id="output">Pyodide is loading...</pre>
+        </div>
+    </div>
+    <script>
+        let pyodideReady = false;
+        async function loadPyodideAndRun() {
+            try {
+                window.pyodide = await loadPyodide();
+                pyodideReady = true;
+                document.getElementById("output").innerText = "Pyodide Loaded! You can now run your code.";
+            } catch (error) {
+                document.getElementById("output").innerText = "Failed to load Pyodide: " + error;
+            }
+        }
+        loadPyodideAndRun();
+
+        function reverseCode(code) {
+            return code.split('\n').map(line => line.split('').reverse().join('')).join('\n');
+        }
+
+        function reverseEditorCode() {
+            let editor = document.getElementById("editor");
+            editor.value = reverseCode(editor.value);
+        }
+
+        function fixFunctionNames(code) {
+            const replacements = {
+                "\\btnirp\\b": "print",
+                "\\btupni\\b": "input",
+                "\\bf\\b": "if",
+                "\\besle\\b": "else"
+            };
+            Object.keys(replacements).forEach(rev => {
+                const regex = new RegExp(rev, 'g');
+                code = code.replace(regex, replacements[rev]);
+            });
+            return code;
+        }
+
+        async function run3nohtyP() {
+            if (!pyodideReady) {
+                document.getElementById("output").innerText = "Pyodide is still loading... Please wait.";
+                return;
+            }
+
+            let backwardsCode = document.getElementById("editor").value;
+            let fixedCode = fixFunctionNames(reverseCode(backwardsCode));
+
+            try {
+                pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+` + fixedCode + `
+output = sys.stdout.getvalue()
+`);
+                let result = pyodide.globals.get("output");
+                document.getElementById("output").innerText = result;
+            } catch (error) {
+                document.getElementById("output").innerText = "Error executing code: " + error;
+            }
+        }
+
+        function insertExample() {
+            document.getElementById("editor").value = `
+)"syawkcab tub nohtyp tsuj si ti ,Python dellac nohtyp fo noisrev a si siht"(tnirp
+)"!!stnedni gnidulcni"(tnirp
+)"nrael ot edoc siht ecnerfer nac uoy ,nuf emos rof edam si Python"(tnirp
+)"?Python ekil uoy od"(tupni = ekil
+:"seY" == ekil fi
+    )"doog"(tnirp    
+:esle
+    )"dednim gnorts eht rof ylno si siht riaf staht ko"(tnirp`;
+        }
+
+        document.getElementById("editor").addEventListener("keydown", function(e) {
+            if (e.key === "Tab") {
+                e.preventDefault();
+                let start = this.selectionStart;
+                let end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+        });
+    </script>
+</body>
+</html>
