@@ -19,19 +19,6 @@
             padding: 20px;
             text-align: center;
         }
-        header {
-            text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(135deg, #1e1e1e, #333333);
-        }
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
         nav {
             display: flex;
             justify-content: center;
@@ -52,6 +39,19 @@
         nav a:hover {
             background-color: #555;
         }
+        header {
+            text-align: center;
+            padding: 40px 20px; /* Reduced padding */
+            background: linear-gradient(135deg, #1e1e1e, #333333);
+        }
+        header h1 {
+            font-size: 2.5rem; /* Slightly smaller */
+            margin-bottom: 5px;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
         section {
             padding: 60px 20px;
             background-color: #1a1a1a;
@@ -64,68 +64,34 @@
             text-align: center;
             padding: 20px;
         }
-        .video-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            gap: 10px;
-            padding: 10px;
-            white-space: nowrap;
-        }
-        .video-container iframe {
-            flex: 0 0 auto;
-            width: 500px;
-            height: 280px;
-            border-radius: 10px;
-        }
-        .scroll-btn {
-            background-color: #444;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1.2rem;
-        }
-        .scroll-btn:hover {
-            background-color: #666;
-        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Ellis Brocklesby</h1>
-        <p>FPV Pilot | 3D Artist | Speed Cuber</p>
-    </header>
     <nav>
         <a href="#fpv">FPV</a>
         <a href="#3d-art">3D ART</a>
         <a href="#speed-cuber">Speed Cuber</a>
     </nav>
+    <header>
+        <h1>Ellis Brocklesby</h1>
+        <p>FPV Pilot | 3D Artist | Speed Cuber</p>
+    </header>
     <div class="container">
         <section id="fpv">
             <h2>FPV Adventures</h2>
             <p>Explore my FPV journey and check out my YouTube channel!</p>
-            <button class="scroll-btn" onclick="scrollLeft()">&#9665;</button>
-            <div class="video-container" id="video-scroll">
-                <iframe src="https://www.youtube.com/embed/rnqu8n8wuz0" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/SqEwLD0e734" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-            </div>
-            <button class="scroll-btn" onclick="scrollRight()">&#9655;</button>
+        </section>
+        <section id="3d-art">
+            <h2>3D Art & Design</h2>
+            <p>Passionate about 3D modeling, animation, and digital creativity.</p>
+        </section>
+        <section id="speed-cuber">
+            <h2>Speed Cubing</h2>
+            <p>Competing and breaking personal records in the world of speed cubing.</p>
         </section>
     </div>
     <footer>
         <p>&copy; 2024 Ellis Brocklesby | <a href="https://ellisbrocklesby.com/OG.html">OG Version</a></p>
     </footer>
-    <script>
-        function scrollLeft() {
-            document.getElementById('video-scroll').scrollBy({ left: -500, behavior: 'smooth' });
-        }
-        function scrollRight() {
-            document.getElementById('video-scroll').scrollBy({ left: 500, behavior: 'smooth' });
-        }
-    </script>
 </body>
 </html>
