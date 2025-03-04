@@ -7,13 +7,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
             background-color: white;
-            margin: 0;
-            padding: 0;
         }
         .status {
             font-size: 24px;
-            text-align: center;
         }
         .connected {
             color: green;
@@ -24,17 +22,7 @@
             justify-content: center;
             align-items: flex-start;
             gap: 20px;
-            padding: 20px;
-        }
-        .camera {
-            width: 900px;
-            height: 600px;
-            background-color: #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-size: 18px;
+            margin-top: 20px;
         }
         .info-container {
             display: flex;
@@ -49,11 +37,19 @@
             text-align: center;
             background-color: white;
         }
-        .upload-box {
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .upload-box, .dropdown-box {
             background-color: #ccc;
             padding: 20px;
             border-radius: 10px;
             cursor: pointer;
+            width: 100%;
+            text-align: center;
         }
         .button {
             display: block;
@@ -70,21 +66,47 @@
         .button:hover {
             background-color: #2980b9;
         }
+        .camera {
+            width: 500px;
+            height: 400px;
+            background-color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 18px;
+        }
         .progress {
             font-size: 22px;
             font-weight: bold;
         }
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #3498db;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">CREALITY</h1>
+    <h1>CREALITY</h1>
     <p class="status">Ender 3: <span class="connected">Connected</span></p>
     
     <div class="container">
         <div class="camera">Live View of Print</div>
         <div class="info-container">
             <div class="box">
-                <div class="upload-box">Drag and drop pre-sliced file or upload</div>
+                <div class="upload-container">
+                    <div class="upload-box">Drag and drop pre-sliced file or upload</div>
+                    <div class="dropdown-box">
+                        <label for="gcode-files">Use Previous G-code File:</label>
+                        <select id="gcode-files">
+                            <option value="">Select a file...</option>
+                            <!-- Options will be dynamically loaded from the API -->
+                        </select>
+                    </div>
+                </div>
                 <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
                 <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
                 <button class="button" id="start-print">Start Print</button>
