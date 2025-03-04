@@ -19,6 +19,19 @@
             padding: 20px;
             text-align: center;
         }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1e1e1e, #333333);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
         nav {
             display: flex;
             justify-content: center;
@@ -39,23 +52,36 @@
         nav a:hover {
             background-color: #555;
         }
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #1e1e1e, #333333);
-        }
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
-        }
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
         section {
             padding: 60px 20px;
             background-color: #1a1a1a;
             margin: 20px 0;
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #0f0f0f;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+        }
+        .video-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            scroll-snap-align: start;
+        }
+        .video-container iframe {
+            flex: 0 0 auto;
+            scroll-snap-align: center;
             border-radius: 10px;
         }
         .gallery img {
@@ -68,65 +94,23 @@
         .gallery img:hover {
             transform: scale(1.05);
         }
-        .video-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 10px 0;
-            scroll-snap-type: x mandatory;
-        }
-        .video-container iframe {
-            width: 400px;
-            height: 225px;
-            flex: none;
-            scroll-snap-align: start;
-            border-radius: 10px;
-        }
-        footer {
-            background-color: #0f0f0f;
-            color: #888;
-            text-align: center;
-            padding: 20px;
-        }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Ellis Brocklesby</h1>
+        <p>FPV Pilot | 3D Artist | Speed Cuber</p>
+    </header>
     <nav>
         <a href="#fpv">FPV</a>
         <a href="#3d-art">3D ART</a>
         <a href="#speed-cuber">Speed Cuber</a>
     </nav>
-    <header>
-        <h1>Ellis Brocklesby</h1>
-        <p>FPV Pilot | 3D Artist | Speed Cuber</p>
-    </header>
     <div class="container">
         <section id="fpv">
             <h2>FPV Adventures</h2>
             <p>Explore my FPV journey and check out my YouTube channel!</p>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/2I5Z_ixSx5w" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/ep5PjS_GPnA" allowfullscreen></iframe>
-            </div>
-        </section>
-        <section id="3d-art">
-            <h2>VFX & 3D Art</h2>
-            <p>I specialize in 3D modeling, animation, and VFX work, creating assets for various projects.</p>
-            <div class="gallery">
-                <img src="https://public-files.gumroad.com/1z3oxca6txmxjaff5jkwfqd5w9pi" alt="3D Render">
-                <img src="Screenshot 2024-09-01 121624.png" alt="3D Work">
-                <img src="your-second-image-url.png" alt="More 3D Art">
-            </div>
-            <p>Follow me on Instagram: <a href="https://www.instagram.com/ellisbrocklesby3d/">@ellisbrocklesby3d</a></p>
-        </section>
-        <section id="speed-cuber">
-            <h2>Speed Cubing</h2>
-            <p>Competing and breaking personal records in the world of speed cubing.</p>
-            <p>Learn more about my achievements: <a href="https://www.worldcubeassociation.org/persons/2022HARR08">WCA Profile</a></p>
-        </section>
-    </div>
-    <footer>
-        <p>&copy; 2024 Ellis Brocklesby | <a href="https://ellisbrocklesby.com/OG.html">OG Version</a></p>
-    </footer>
-</body>
-</html>
+            <div class="video-scroll">
+                <div class="video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/ep5PjS_GPnA?si=y3F_DbUolqJgzqzQ" allowfullscreen></iframe>
+                    <iframe wid
