@@ -21,7 +21,7 @@
         }
         header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 20px;
             background: linear-gradient(135deg, #1e1e1e, #333333);
         }
         header h1 {
@@ -29,7 +29,7 @@
             margin-bottom: 10px;
         }
         header p {
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.8;
         }
         nav {
@@ -64,26 +64,6 @@
             text-align: center;
             padding: 20px;
         }
-        .video-scroll {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 10px;
-            padding: 10px;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-        }
-        .video-container {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 10px;
-            scroll-snap-align: start;
-        }
-        .video-container iframe {
-            flex: 0 0 auto;
-            scroll-snap-align: center;
-            border-radius: 10px;
-        }
         .gallery img {
             width: 100%;
             max-width: 500px;
@@ -93,6 +73,23 @@
         }
         .gallery img:hover {
             transform: scale(1.05);
+        }
+        .video-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .video-container::-webkit-scrollbar {
+            display: none;
+        }
+        .video-container iframe {
+            flex: 0 0 auto;
+            width: 560px;
+            height: 315px;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -110,7 +107,29 @@
         <section id="fpv">
             <h2>FPV Adventures</h2>
             <p>Explore my FPV journey and check out my YouTube channel!</p>
-            <div class="video-scroll">
-                <div class="video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/ep5PjS_GPnA?si=y3F_DbUolqJgzqzQ" allowfullscreen></iframe>
-                    <iframe wid
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/ep5PjS_GPnA?si=y3F_DbUolqJgzqzQ" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/2I5Z_ixSx5w?si=ZlbTN1m93eP82PG0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/7bA2NiNaBg4?si=xOAdTgUd_OagnlB9" allowfullscreen></iframe>
+            </div>
+        </section>
+        <section id="3d-art">
+            <h2>3D Art & Design</h2>
+            <p>Passionate about 3D modeling, animation, and digital creativity.</p>
+            <div class="gallery">
+                <img src="https://public-files.gumroad.com/1z3oxca6txmxjaff5jkwfqd5w9pi" alt="3D Render">
+                <img src="Screenshot 2024-09-01 121624.png" alt="3D Work">
+            </div>
+            <p>Follow me on Instagram: <a href="https://www.instagram.com/ellisbrocklesby3d/">@ellisbrocklesby3d</a></p>
+        </section>
+        <section id="speed-cuber">
+            <h2>Speed Cubing</h2>
+            <p>Competing and breaking personal records in the world of speed cubing.</p>
+            <p>Learn more about my achievements: <a href="https://www.worldcubeassociation.org/persons/2022HARR08">WCA Profile</a></p>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 Ellis Brocklesby | <a href="https://ellisbrocklesby.com/OG.html">OG Version</a></p>
+    </footer>
+</body>
+</html>
