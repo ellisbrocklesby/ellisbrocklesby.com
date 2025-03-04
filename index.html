@@ -6,140 +6,119 @@
     <title>Ellis Brocklesby</title>
     <link rel="icon" type="image/x-icon" href="https://ugc.production.linktr.ee/d9ee1f11-a82c-48c0-9703-c49c5fd0fb19_download--2-.png?io=true&size=avatar-v3_0">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
             background-color: #121212;
             color: #ffffff;
             font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
         }
-        .menu-bar {
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 15px 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 999;
-            transition: background-color 0.3s;
-        }
-        .menu-bar nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.2em;
-            padding: 10px 20px;
-            margin: 0 15px;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-        .menu-bar nav a:hover {
-            background-color: #ff9800;
-            color: #000;
-        }
-        header {
-            text-align: center;
-            padding: 120px 20px 80px;
-        }
-        h1 {
-            font-size: 3rem;
-        }
-        .roles {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ff9800;
-            margin-top: 10px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #ff9800;
-            color: #000;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            background: #e68900;
-        }
-        .section {
-            padding: 100px 20px;
-            text-align: center;
-            background: #1e1e1e;
-            margin-bottom: 20px;
-        }
-        .section h1 {
-            margin-bottom: 20px;
-        }
-        .section img {
-            max-width: 90%;
-            height: auto;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        footer {
-            background: #000;
+        .container {
+            max-width: 1200px;
+            margin: auto;
             padding: 20px;
             text-align: center;
         }
-        footer a {
-            color: #ff9800;
-            text-decoration: none;
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1e1e1e, #333333);
         }
-        @keyframes fadeInOut {
-            0% { opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0; }
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background-color: #222;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        section {
+            padding: 60px 20px;
+            background-color: #1a1a1a;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #0f0f0f;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+        }
+        .gallery img {
+            width: 100%;
+            max-width: 500px;
+            margin: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+        .video-container iframe {
+            width: 100%;
+            max-width: 500px;
+            height: 280px;
+            margin: 10px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="menu-bar">
-        <nav>
-            <a href="#fpv">FPV</a>
-            <a href="#3d-art">3D ART</a>
-            <a href="#speed-cuber">Speed Cuber</a>
-        </nav>
-    </div>
     <header>
         <h1>Ellis Brocklesby</h1>
-        <p class="roles" id="roleText">(FPV PILOT)</p>
-        <p>Hello, welcome to my website all about me. Feel free to browse and learn more about what I do.</p>
-        <a href="https://linktr.ee/EllisBrocklesby" class="btn">Check out my socials</a>
+        <p>FPV Pilot | 3D Artist | Speed Cuber</p>
     </header>
-    <section id="fpv" class="section">
-        <h1>FPV</h1>
-        <p>Check out my FPV YouTube channel <a href="https://www.youtube.com/channel/UCzmBmnu8SvRc-Ccm_B_6YOg">here</a></p>
-        <iframe width="360" height="200" src="https://www.youtube.com/embed/rnqu8n8wuz0" allowfullscreen></iframe>
-        <iframe width="360" height="200" src="https://www.youtube.com/embed/SqEwLD0e734" allowfullscreen></iframe>
-        <p>Flying FPV gives me freedom like nothing else. I love freestyle because it's the most thrilling and fun style of flying.</p>
-    </section>
-    <section id="3d-art" class="section">
-        <h1>3D ART</h1>
-        <p>I create 3D models, animations, and renders. Check out my work on Instagram <a href="https://www.instagram.com/ellisbrocklesby3d/">@ellisbrocklesby3d</a> or purchase my models <a href="https://brocklesby.gumroad.com/">here</a>.</p>
-        <img src="https://public-files.gumroad.com/1z3oxca6txmxjaff5jkwfqd5w9pi" style="max-width: 40%;">
-    </section>
-    <section id="speed-cuber" class="section">
-        <h1>Speed Cuber</h1>
-        <p>View my speedcubing records and rankings <a href="https://www.worldcubeassociation.org/persons/2022HARR08">here</a>.</p>
-        <p>I average 22 seconds on 3x3, with a PB of 9 seconds, and 5 seconds on 2x2. I also solve 4x4, Pyraminx, Skewb, OH 3x3, 5x5, and more.</p>
-    </section>
+    <nav>
+        <a href="#fpv">FPV</a>
+        <a href="#3d-art">3D ART</a>
+        <a href="#speed-cuber">Speed Cuber</a>
+    </nav>
+    <div class="container">
+        <section id="fpv">
+            <h2>FPV Adventures</h2>
+            <p>Explore my FPV journey and check out my YouTube channel!</p>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/rnqu8n8wuz0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/SqEwLD0e734" allowfullscreen></iframe>
+            </div>
+        </section>
+        <section id="3d-art">
+            <h2>3D Art & Design</h2>
+            <p>Passionate about 3D modeling, animation, and digital creativity.</p>
+            <div class="gallery">
+                <img src="https://public-files.gumroad.com/1z3oxca6txmxjaff5jkwfqd5w9pi" alt="3D Render">
+                <img src="Screenshot 2024-09-01 121624.png" alt="3D Work">
+            </div>
+            <p>Follow me on Instagram: <a href="https://www.instagram.com/ellisbrocklesby3d/">@ellisbrocklesby3d</a></p>
+        </section>
+        <section id="speed-cuber">
+            <h2>Speed Cubing</h2>
+            <p>Competing and breaking personal records in the world of speed cubing.</p>
+            <p>Learn more about my achievements: <a href="https://www.worldcubeassociation.org/persons/2022HARR08">WCA Profile</a></p>
+        </section>
+    </div>
     <footer>
-        <p>&copy; 2024 Ellis Brocklesby. <a href="https://ellisbrocklesby.com/OG.html">OG</a></p>
+        <p>&copy; 2024 Ellis Brocklesby | <a href="https://ellisbrocklesby.com/OG.html">OG Version</a></p>
     </footer>
-    <script>
-        const roles = ["(FPV PILOT)", "(CAD DESIGNER)", "(VFX ARTIST)", "(Speed Cuber)"];
-        let roleIndex = 0;
-        function scrollRoles() {
-            document.getElementById("roleText").textContent = roles[roleIndex];
-            roleIndex = (roleIndex + 1) % roles.length;
-        }
-        setInterval(scrollRoles, 4000);
-    </script>
 </body>
 </html>
