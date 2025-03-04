@@ -6,34 +6,33 @@
     <title>Ellis Brocklesby</title>
     <link rel="icon" type="image/x-icon" href="https://ugc.production.linktr.ee/d9ee1f11-a82c-48c0-9703-c49c5fd0fb19_download--2-.png?io=true&size=avatar-v3_0">
     <style>
-        * {
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
-        body {
-            background-color: #0d0d0d;
-            color: #fff;
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
             text-align: center;
         }
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #1a1a1a, #333);
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1e1e1e, #333333);
         }
-        .hero h1 {
-            font-size: 3.5rem;
+        header h1 {
+            font-size: 3rem;
             margin-bottom: 10px;
         }
-        .hero p {
+        header p {
             font-size: 1.2rem;
             opacity: 0.8;
         }
-        .nav {
+        nav {
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -43,79 +42,90 @@
             top: 0;
             z-index: 1000;
         }
-        .nav a {
+        nav a {
             text-decoration: none;
             color: #fff;
             padding: 10px 20px;
             border-radius: 5px;
             transition: 0.3s;
         }
-        .nav a:hover {
+        nav a:hover {
             background-color: #555;
         }
-        .section {
-            padding: 80px 20px;
-        }
-        .section:nth-child(even) {
-            background-color: #111;
-        }
-        .grid {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .grid img, .grid iframe {
-            width: 100%;
-            max-width: 400px;
+        section {
+            padding: 60px 20px;
+            background-color: #1a1a1a;
+            margin: 20px 0;
             border-radius: 10px;
-            transition: transform 0.3s;
-        }
-        .grid img:hover, .grid iframe:hover {
-            transform: scale(1.05);
         }
         footer {
             background-color: #0f0f0f;
             color: #888;
+            text-align: center;
             padding: 20px;
-            margin-top: 40px;
+        }
+        .video-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 10px;
+            padding: 10px;
+            white-space: nowrap;
+        }
+        .video-container iframe {
+            flex: 0 0 auto;
+            width: 500px;
+            height: 280px;
+            border-radius: 10px;
+        }
+        .scroll-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+        .scroll-btn:hover {
+            background-color: #666;
         }
     </style>
 </head>
 <body>
-    <div class="hero">
+    <header>
         <h1>Ellis Brocklesby</h1>
         <p>FPV Pilot | 3D Artist | Speed Cuber</p>
-    </div>
-    <nav class="nav">
+    </header>
+    <nav>
         <a href="#fpv">FPV</a>
-        <a href="#3d-art">3D Art</a>
-        <a href="#speed-cuber">Speed Cubing</a>
+        <a href="#3d-art">3D ART</a>
+        <a href="#speed-cuber">Speed Cuber</a>
     </nav>
-    <section id="fpv" class="section">
-        <h2>FPV Adventures</h2>
-        <p>Explore my FPV journey and check out my YouTube channel!</p>
-        <div class="grid">
-            <iframe src="https://www.youtube.com/embed/rnqu8n8wuz0" allowfullscreen></iframe>
-            <iframe src="https://www.youtube.com/embed/SqEwLD0e734" allowfullscreen></iframe>
-        </div>
-    </section>
-    <section id="3d-art" class="section">
-        <h2>3D Art & Design</h2>
-        <p>Passionate about 3D modeling, animation, and digital creativity.</p>
-        <div class="grid">
-            <img src="https://public-files.gumroad.com/1z3oxca6txmxjaff5jkwfqd5w9pi" alt="3D Render">
-            <img src="Screenshot 2024-09-01 121624.png" alt="3D Work">
-        </div>
-        <p>Follow me on Instagram: <a href="https://www.instagram.com/ellisbrocklesby3d/" target="_blank">@ellisbrocklesby3d</a></p>
-    </section>
-    <section id="speed-cuber" class="section">
-        <h2>Speed Cubing</h2>
-        <p>Competing and breaking personal records in the world of speed cubing.</p>
-        <p>Learn more about my achievements: <a href="https://www.worldcubeassociation.org/persons/2022HARR08" target="_blank">WCA Profile</a></p>
-    </section>
+    <div class="container">
+        <section id="fpv">
+            <h2>FPV Adventures</h2>
+            <p>Explore my FPV journey and check out my YouTube channel!</p>
+            <button class="scroll-btn" onclick="scrollLeft()">&#9665;</button>
+            <div class="video-container" id="video-scroll">
+                <iframe src="https://www.youtube.com/embed/rnqu8n8wuz0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/SqEwLD0e734" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+            </div>
+            <button class="scroll-btn" onclick="scrollRight()">&#9655;</button>
+        </section>
+    </div>
     <footer>
         <p>&copy; 2024 Ellis Brocklesby | <a href="https://ellisbrocklesby.com/OG.html">OG Version</a></p>
     </footer>
+    <script>
+        function scrollLeft() {
+            document.getElementById('video-scroll').scrollBy({ left: -500, behavior: 'smooth' });
+        }
+        function scrollRight() {
+            document.getElementById('video-scroll').scrollBy({ left: 500, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
