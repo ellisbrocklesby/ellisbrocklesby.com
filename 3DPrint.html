@@ -55,6 +55,12 @@
             width: 100%;
             font-size: 16px;
         }
+        .file-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #3498db;
+            width: 100%;
+        }
         .button {
             display: block;
             width: 100%;
@@ -84,37 +90,119 @@
             font-size: 22px;
             font-weight: bold;
         }
+        /* Hide content by default */
+        #content {
+            display: none;
+        }
+        /* Password prompt styling */
+        #password-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+        }
+        #password-box {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            background-color: white;
+        }
+        #password-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #3498db;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <h1>CREALITY</h1>
-    <p class="status">Ender 3: <span class="connected">Connected</span></p>
-    
-    <div class="container">
-        <div class="camera">Live View of Print</div>
-        <div class="info-boxes">
-            <div class="box">
-                <div class="upload-container">
-                    <div class="upload-box">Drag and drop pre-sliced file or upload</div>
-                    <select class="dropdown" id="previous-files">
-                        <option value="">Use Previous G-code File</option>
-                        <option value="file1.gcode">file1.gcode</option>
-                        <option value="file2.gcode">file2.gcode</option>
-                    </select>
+
+    <!-- Password Prompt -->
+    <div id="password-container">
+        <div id="password-box">
+            <h2>Enter Password</h2>
+            <input type="password" id="password-input" placeholder="Enter password" />
+            <button class="button" onclick="checkPassword()">Submit</button>
+        </div>
+    </div>
+
+    <!-- Actual Dashboard Content (hidden until password is correct) -->
+    <div id="content">
+        <p class="status">Ender 3: <span class="connected">Connected</span></p>
+        
+        <div class="container">
+            <div class="camera">Live View of Print</div>
+            <div class="info-boxes">
+                <div class="box">
+                    <div class="upload-container">
+                        <!-- Upload Box for G-code File -->
+                        <div class="upload-box">Drag and drop pre-sliced file or upload</div>
+                        <input type="file" class="file-input" id="file-upload" />
+                        <select class="dropdown" id="previous-files">
+                            <option value="">Use Previous G-code File</option>
+                            <option value="file1.gcode">file1.gcode</option>
+                            <option value="file2.gcode">file2.gcode</option>
+                        </select>
+                    </div>
+                    <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
+                    <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
+                    <button class="button" id="start-print">Start Print</button>
                 </div>
-                <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
-                <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
-                <button class="button" id="start-print">Start Print</button>
-            </div>
-            <div class="box">
-                <p><strong>Time remaining:</strong> <span id="time-remaining">1 hour 53 minutes</span></p>
-                <p><strong>Nozzle temp:</strong> <span id="nozzle-temp">45°C</span></p>
-                <p><strong>Bed temp:</strong> <span id="bed-temp">145°C</span></p>
-                <p class="progress"><span id="progress">45%</span> Print Completion</p>
-                <button class="button" id="pause">Pause</button>
-                <button class="button" id="stop">Stop</button>
+                <div class="box">
+                    <p><strong>Time remaining:</strong> <span id="time-remaining">1 hour 53 minutes</span></p>
+                    <p><strong>Nozzle temp:</strong> <span id="nozzle-temp">45°C</span></p>
+                    <p><strong>Bed temp:</strong> <span id="bed-temp">145°C</span></p>
+                    <p class="progress"><span id="progress">45%</span> Print Completion</p>
+                    <button class="button" id="pause">Pause</button>
+                    <button class="button" id="stop">Stop</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Password validation function
+        function checkPassword() {
+            const enteredPassword = document.getElementById('password-input').value;
+            const correctPassword = 'Ellis2010!';
+
+            if (enteredPassword === correctPassword) {
+                // If correct, show the dashboard content and hide the password prompt
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('password-container').style.display = 'none';
+            } else {
+                // If incorrect, alert the user
+                alert('Incorrect password. Please try again.');
+            }
+        }
+
+        // Event Listener for File Upload
+        document.getElementById('file-upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Optionally, display the file name or perform other actions like uploading to the server
+                alert('File selected: ' + file.name);
+            }
+        });
+
+        // Event Listener for Start Print button
+        document.getElementById('start-print').addEventListener('click', function() {
+            // Handle the print start logic here
+            alert('Starting print...');
+        });
+
+        // Event Listener for Pause button
+        document.getElementById('pause').addEventListener('click', function() {
+            // Handle the pause logic here
+            alert('Pausing print...');
+        });
+
+        // Event Listener for Stop button
+        document.getElementById('stop').addEventListener('click', function() {
+            // Handle the stop logic here
+            alert('Stopping print...');
+        });
+    </script>
 </body>
 </html>
