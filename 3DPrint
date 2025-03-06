@@ -7,192 +7,185 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
+            background-color: #1a1a1a;
+            color: #fff;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
-        h1 {
+        header {
+            background-color: #0044cc;
+            padding: 20px;
             text-align: center;
-            color: #1e90ff;
+            font-size: 1.5em;
         }
         .container {
-            max-width: 900px;
-            margin: auto;
-            background-color: #ffffff;
-            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .status, .controls, .camera {
+        .status {
             margin-bottom: 20px;
         }
-        .status div, .controls div {
-            margin-bottom: 10px;
+        .status div {
+            margin: 10px 0;
         }
-        .status div span, .controls div button {
+        .status span {
             font-weight: bold;
         }
-        .camera {
-            text-align: center;
+        .button-container {
+            margin-top: 20px;
         }
-        .camera iframe {
+        button {
+            background-color: #0044cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #003399;
+        }
+        #camera-area {
+            margin-top: 30px;
             width: 100%;
             height: 400px;
-            border: none;
-        }
-        .upload {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .upload input {
-            width: 80%;
+            background: #333;
         }
     </style>
 </head>
 <body>
-    <h1>OctoPrint Dashboard</h1>
-    <div class="container">
-        <!-- Status Section -->
-        <div class="status">
-            <h2>Status Information</h2>
-            <div>Print Time Left: <span id="print-time-left">Loading...</span></div>
-            <div>Temperature: <span id="temp">Loading...</span></div>
-            <div>Heated Bed: <span id="bed-temp">Loading...</span></div>
-        </div>
 
-        <!-- Controls Section -->
-        <div class="controls">
-            <h2>Controls</h2>
-            <div>
-                <button onclick="startPrint()">Start Print</button>
-                <button onclick="pausePrint()">Pause Print</button>
-                <button onclick="stopPrint()">Stop Print</button>
-            </div>
-            <div class="upload">
-                <input type="file" id="gcode-file" accept=".gcode" />
-                <button onclick="uploadGCode()">Upload GCode</button>
-            </div>
-        </div>
+<header>
+    OctoPrint Dashboard
+</header>
 
-        <!-- Camera Section -->
-        <div class="camera">
-            <h2>Camera</h2>
-            <!-- Placeholder for camera feed -->
-            <iframe id="camera-feed" src="" alt="Camera feed"></iframe>
-        </div>
+<div class="container">
+    <div class="status">
+        <div><span>Print Time Left:</span> <span id="time-left">Loading...</span></div>
+        <div><span>Temperature:</span> <span id="temperature">Loading...</span></div>
+        <div><span>Print Status:</span> <span id="status">Loading...</span></div>
     </div>
 
-    <script>
-        const apiKey = "DWQNtwQ-3u_pXX7WqHDuDNAG0uDm6UWEaqWWbdJB52U"; // Replace with your actual OctoPrint API key
-        const octoPrintUrl = "http://your-octoprint.local/api/"; // Replace with your OctoPrint API endpoint
+    <div class="button-container">
+        <input type="file" id="gcode-upload" />
+        <button id="start-btn">Start Print</button>
+        <button id="pause-btn">Pause Print</button>
+        <button id="stop-btn">Stop Print</button>
+    </div>
 
-        // Fetch status information
-        function fetchStatus() {
-            fetch(`${octoPrintUrl}printer`, {
-                headers: { "X-Api-Key": apiKey }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("print-time-left").textContent = data.progress.printTimeLeft;
-                document.getElementById("temp").textContent = `${data.temperature.tool0.actual}°C`;
-                document.getElementById("bed-temp").textContent = `${data.temperature.bed.actual}°C`;
-            })
-            .catch(error => console.error("Error fetching status:", error));
-        }
+    <div id="camera-area">
+        <!-- Placeholder for Camera Stream -->
+        <h2 style="color: white; text-align: center;">Camera will be here</h2>
+    </div>
+</div>
 
-        // Start print (upload GCode)
-        function startPrint() {
-            const fileInput = document.getElementById("gcode-file");
-            if (fileInput.files.length > 0) {
-                const formData = new FormData();
-                formData.append("file", fileInput.files[0]);
+<script>
+    const apiKey = 'DWQNtwQ-3u_pXX7WqHDuDNAG0uDm6UWEaqWWbdJB52U';  // Replace with your OctoPrint API Key
+    const baseUrl = 'http://192.168.1.8:5000/api/';  // Corrected OctoPrint URL
 
-                fetch(`${octoPrintUrl}files/local`, {
-                    method: "POST",
-                    headers: { "X-Api-Key": apiKey },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    fetch(`${octoPrintUrl}job`, {
-                        method: "POST",
-                        headers: {
-                            "X-Api-Key": apiKey,
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            command: "start",
-                            file: { name: data.name }
-                        })
-                    })
-                    .then(response => console.log("Print started"))
-                    .catch(error => console.error("Error starting print:", error));
-                })
-                .catch(error => console.error("Error uploading GCode:", error));
-            } else {
-                alert("Please select a GCode file to upload.");
-            }
-        }
-
-        // Pause print
-        function pausePrint() {
-            fetch(`${octoPrintUrl}job`, {
-                method: "POST",
+    // Fetch current status info (print time left, temperature, print status)
+    async function fetchStatus() {
+        try {
+            const response = await fetch(baseUrl + 'printer', {
+                method: 'GET',
                 headers: {
-                    "X-Api-Key": apiKey,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ command: "pause" })
-            })
-            .then(response => console.log("Print paused"))
-            .catch(error => console.error("Error pausing print:", error));
+                    'X-Api-Key': apiKey
+                }
+            });
+            const data = await response.json();
+            document.getElementById('time-left').innerText = data.currentPrintTimeLeft || "N/A";
+            document.getElementById('temperature').innerText = `Hotend: ${data.temperature.tool0.actual}°C / Bed: ${data.temperature.bed.actual}°C`;
+            document.getElementById('status').innerText = data.state.text || "N/A";
+        } catch (error) {
+            console.error('Error fetching printer status:', error);
         }
+    }
 
-        // Stop print
-        function stopPrint() {
-            fetch(`${octoPrintUrl}job`, {
-                method: "POST",
+    // Start a print by uploading the G-code file
+    async function startPrint(gcodeFile) {
+        const formData = new FormData();
+        formData.append('file', gcodeFile);
+
+        try {
+            const response = await fetch(baseUrl + 'files/local', {
+                method: 'POST',
                 headers: {
-                    "X-Api-Key": apiKey,
-                    "Content-Type": "application/json"
+                    'X-Api-Key': apiKey
                 },
-                body: JSON.stringify({ command: "cancel" })
-            })
-            .then(response => console.log("Print stopped"))
-            .catch(error => console.error("Error stopping print:", error));
-        }
-
-        // Upload GCode file
-        function uploadGCode() {
-            const fileInput = document.getElementById("gcode-file");
-            if (fileInput.files.length > 0) {
-                const formData = new FormData();
-                formData.append("file", fileInput.files[0]);
-
-                fetch(`${octoPrintUrl}files/local`, {
-                    method: "POST",
-                    headers: { "X-Api-Key": apiKey },
-                    body: formData
+                body: formData
+            });
+            const data = await response.json();
+            await fetch(baseUrl + `job`, {
+                method: 'POST',
+                headers: {
+                    'X-Api-Key': apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    command: 'select',
+                    print: true,
+                    file: { name: data.name }
                 })
-                .then(response => response.json())
-                .then(data => console.log("GCode uploaded"))
-                .catch(error => console.error("Error uploading GCode:", error));
-            } else {
-                alert("Please select a GCode file.");
-            }
+            });
+        } catch (error) {
+            console.error('Error starting print:', error);
         }
+    }
 
-        // Fetch camera feed (you can replace the URL with your camera feed URL later)
-        function fetchCameraFeed() {
-            const cameraIframe = document.getElementById("camera-feed");
-            cameraIframe.src = "http://your-camera-feed-url"; // Replace with your camera URL
+    // Pause the current print
+    async function pausePrint() {
+        try {
+            await fetch(baseUrl + 'job', {
+                method: 'POST',
+                headers: {
+                    'X-Api-Key': apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command: 'pause' })
+            });
+        } catch (error) {
+            console.error('Error pausing print:', error);
         }
+    }
 
-        // Initialize
-        fetchStatus();
-        fetchCameraFeed();
-    </script>
+    // Stop the current print
+    async function stopPrint() {
+        try {
+            await fetch(baseUrl + 'job', {
+                method: 'POST',
+                headers: {
+                    'X-Api-Key': apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command: 'cancel' })
+            });
+        } catch (error) {
+            console.error('Error stopping print:', error);
+        }
+    }
+
+    // Handle G-code file upload
+    document.getElementById('gcode-upload').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            startPrint(file);
+        }
+    });
+
+    // Add event listeners for buttons
+    document.getElementById('start-btn').addEventListener('click', () => {
+        const fileInput = document.getElementById('gcode-upload');
+        if (fileInput.files.length > 0) {
+            startPrint(fileInput.files[0]);
+        }
+    });
+    document.getElementById('pause-btn').addEventListener('click', pausePrint);
+    document.getElementById('stop-btn').addEventListener('click', stopPrint);
+
+    // Initial fetch of printer status
+    fetchStatus();
+    setInterval(fetchStatus, 5000); // Update status every 5 seconds
+</script>
+
 </body>
 </html>
