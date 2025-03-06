@@ -1,191 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OctoPrint Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #0044cc;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-        .container {
-            padding: 20px;
-        }
-        .status {
-            margin-bottom: 20px;
-        }
-        .status div {
-            margin: 10px 0;
-        }
-        .status span {
-            font-weight: bold;
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-        button {
-            background-color: #0044cc;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            margin: 5px;
-        }
-        button:hover {
-            background-color: #003399;
-        }
-        #camera-area {
-            margin-top: 30px;
-            width: 100%;
-            height: 400px;
-            background: #333;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Printer Control</title>
+  <style>
+    body {
+      background-color: #1E3A8A;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .container {
+      text-align: center;
+    }
+    button {
+      background-color: #3B82F6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .status {
+      margin-top: 30px;
+    }
+    .camera {
+      margin-top: 50px;
+      background-color: #4CAF50;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    OctoPrint Dashboard
-</header>
+  <div class="container">
+    <h1>3D Printer Dashboard</h1>
 
-<div class="container">
     <div class="status">
-        <div><span>Print Time Left:</span> <span id="time-left">Loading...</span></div>
-        <div><span>Temperature:</span> <span id="temperature">Loading...</span></div>
-        <div><span>Print Status:</span> <span id="status">Loading...</span></div>
+      <h2>Printer Status</h2>
+      <p id="printer-status">Loading...</p>
+      <p id="temperature">Temperature: Loading...</p>
+      <p id="time-left">Time Left: Loading...</p>
     </div>
 
-    <div class="button-container">
-        <input type="file" id="gcode-upload" />
-        <button id="start-btn">Start Print</button>
-        <button id="pause-btn">Pause Print</button>
-        <button id="stop-btn">Stop Print</button>
+    <div class="controls">
+      <h3>Controls</h3>
+      <button onclick="startPrint()">Start Print</button>
+      <button onclick="pausePrint()">Pause Print</button>
+      <button onclick="stopPrint()">Stop Print</button>
     </div>
 
-    <div id="camera-area">
-        <!-- Placeholder for Camera Stream -->
-        <h2 style="color: white; text-align: center;">Camera will be here</h2>
+    <div class="camera">
+      <h3>Camera Feed</h3>
+      <!-- Embed the camera feed once it's available -->
+      <div id="camera-feed">Camera will be added here...</div>
     </div>
-</div>
+  </div>
 
-<script>
-    const apiKey = 'DWQNtwQ-3u_pXX7WqHDuDNAG0uDm6UWEaqWWbdJB52U';  // Replace with your OctoPrint API Key
-    const baseUrl = 'http://192.168.1.8:5000/api/';  // Corrected OctoPrint URL
+  <script>
+    const apiUrl = 'http://192.168.1.8:5000/api/';  // HTTP version for local access
 
-    // Fetch current status info (print time left, temperature, print status)
-    async function fetchStatus() {
-        try {
-            const response = await fetch(baseUrl + 'printer', {
-                method: 'GET',
-                headers: {
-                    'X-Api-Key': apiKey
-                }
-            });
-            const data = await response.json();
-            document.getElementById('time-left').innerText = data.currentPrintTimeLeft || "N/A";
-            document.getElementById('temperature').innerText = `Hotend: ${data.temperature.tool0.actual}°C / Bed: ${data.temperature.bed.actual}°C`;
-            document.getElementById('status').innerText = data.state.text || "N/A";
-        } catch (error) {
-            console.error('Error fetching printer status:', error);
-        }
+    // Fetch printer status
+    async function fetchPrinterStatus() {
+      try {
+        const response = await fetch(apiUrl + 'printer');
+        const data = await response.json();
+        document.getElementById('printer-status').innerText = data.state.text;
+        document.getElementById('temperature').innerText = `Temperature: ${data.temperature.tool0.actual}°C`;
+        document.getElementById('time-left').innerText = `Time Left: ${data.progress.printTimeLeft / 60} min`;
+      } catch (error) {
+        console.error('Error fetching printer status:', error);
+      }
     }
 
-    // Start a print by uploading the G-code file
-    async function startPrint(gcodeFile) {
-        const formData = new FormData();
-        formData.append('file', gcodeFile);
-
-        try {
-            const response = await fetch(baseUrl + 'files/local', {
-                method: 'POST',
-                headers: {
-                    'X-Api-Key': apiKey
-                },
-                body: formData
-            });
-            const data = await response.json();
-            await fetch(baseUrl + `job`, {
-                method: 'POST',
-                headers: {
-                    'X-Api-Key': apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    command: 'select',
-                    print: true,
-                    file: { name: data.name }
-                })
-            });
-        } catch (error) {
-            console.error('Error starting print:', error);
-        }
-    }
-
-    // Pause the current print
-    async function pausePrint() {
-        try {
-            await fetch(baseUrl + 'job', {
-                method: 'POST',
-                headers: {
-                    'X-Api-Key': apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ command: 'pause' })
-            });
-        } catch (error) {
-            console.error('Error pausing print:', error);
-        }
-    }
-
-    // Stop the current print
-    async function stopPrint() {
-        try {
-            await fetch(baseUrl + 'job', {
-                method: 'POST',
-                headers: {
-                    'X-Api-Key': apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ command: 'cancel' })
-            });
-        } catch (error) {
-            console.error('Error stopping print:', error);
-        }
-    }
-
-    // Handle G-code file upload
-    document.getElementById('gcode-upload').addEventListener('change', (event) => {
+    // Start print by uploading GCode
+    function startPrint() {
+      const formData = new FormData();
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.gcode';
+      fileInput.onchange = async function(event) {
         const file = event.target.files[0];
         if (file) {
-            startPrint(file);
+          formData.append('file', file);
+          try {
+            await fetch(apiUrl + 'files/local', {
+              method: 'POST',
+              body: formData
+            });
+            alert('Print started!');
+          } catch (error) {
+            console.error('Error starting print:', error);
+            alert('Failed to start print');
+          }
         }
-    });
+      };
+      fileInput.click();
+    }
 
-    // Add event listeners for buttons
-    document.getElementById('start-btn').addEventListener('click', () => {
-        const fileInput = document.getElementById('gcode-upload');
-        if (fileInput.files.length > 0) {
-            startPrint(fileInput.files[0]);
-        }
-    });
-    document.getElementById('pause-btn').addEventListener('click', pausePrint);
-    document.getElementById('stop-btn').addEventListener('click', stopPrint);
+    // Pause the print
+    async function pausePrint() {
+      try {
+        await fetch(apiUrl + 'printer/pause', { method: 'POST' });
+        alert('Print paused!');
+      } catch (error) {
+        console.error('Error pausing print:', error);
+        alert('Failed to pause print');
+      }
+    }
 
-    // nitial fetch of printer status
-    fetchStatus();
-    setInterval(fetchStatus, 5000); // Update status every 5 seconds
-</script>
+    // Stop the print
+    async function stopPrint() {
+      try {
+        await fetch(apiUrl + 'printer/stop', { method: 'POST' });
+        alert('Print stopped!');
+      } catch (error) {
+        console.error('Error stopping print:', error);
+        alert('Failed to stop print');
+      }
+    }
+
+    // Fetch printer status every 5 seconds
+    setInterval(fetchPrinterStatus, 5000);
+    fetchPrinterStatus(); // Initial fetch
+  </script>
 
 </body>
 </html>
