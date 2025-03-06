@@ -3,247 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creality Ender 3 Dashboard</title>
+    <title>3D Printer Control Panel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: white;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
         }
-        .status {
-            font-size: 24px;
-        }
-        .connected {
-            color: green;
+        h1 {
+            color: #333;
         }
         .container {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: space-between;
             gap: 20px;
+        }
+        .panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        .panel h2 {
+            color: #444;
+        }
+        .status {
+            font-weight: bold;
+            color: green;
+        }
+        .status.off {
+            color: red;
+        }
+        .progress-bar-container {
+            position: relative;
+            height: 25px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            border-radius: 5px;
+            width: 0;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
             margin-top: 20px;
         }
-        .info-boxes {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .box {
-            border: 2px solid #3498db;
-            border-radius: 10px;
-            padding: 15px;
-            width: 350px;
-            text-align: center;
-            background-color: white;
-        }
-        .upload-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .upload-box {
-            background-color: #ccc;
-            padding: 20px;
-            border-radius: 10px;
+        button {
+            padding: 10px;
+            font-size: 14px;
             cursor: pointer;
-        }
-        .dropdown {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #3498db;
-            width: 100%;
-            font-size: 16px;
-        }
-        .file-input {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #3498db;
-            width: 100%;
-        }
-        .button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #3498db;
-            color: white;
             border: none;
             border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
         }
-        .button:hover {
-            background-color: #2980b9;
-        }
-        .camera {
-            width: 900px;
-            height: 800px;
-            background-color: #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-size: 18px;
-        }
-        .progress {
-            font-size: 22px;
-            font-weight: bold;
-        }
-        /* Hide content by default */
-        #content {
-            display: none;
-        }
-        /* Password prompt styling */
-        #password-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 100px;
-        }
-        #password-box {
-            text-align: center;
-            padding: 20px;
-            border: 2px solid #3498db;
-            border-radius: 10px;
-            background-color: white;
-        }
-        #password-input {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #3498db;
-            font-size: 18px;
+        button:hover {
+            background-color: #e7e7e7;
         }
     </style>
 </head>
 <body>
-    <h1>CREALITY</h1>
 
-    <!-- Password Prompt -->
-    <div id="password-container">
-        <div id="password-box">
-            <h2>Enter Password</h2>
-            <input type="password" id="password-input" placeholder="Enter password" />
-            <button class="button" onclick="checkPassword()">Submit</button>
+    <h1>3D Printer Control Panel</h1>
+
+    <div class="container">
+        <!-- Printer Status Panel -->
+        <div class="panel">
+            <h2>Printer Status</h2>
+            <p id="printerStatus" class="status">Printer is Off</p>
+            <div class="action-buttons">
+                <button onclick="togglePrinterStatus()">Turn On Printer</button>
+                <button onclick="togglePrinterStatus()">Turn Off Printer</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Actual Dashboard Content (hidden until password is correct) -->
-    <div id="content">
-        <p class="status">Ender 3: <span class="connected">Connected</span></p>
-        
-        <div class="container">
-            <div class="camera">Live View of Print</div>
-            <div class="info-boxes">
-                <div class="box">
-                    <div class="upload-container">
-                        <!-- Upload Box for G-code File -->
-                        <div class="upload-box" onclick="uploadFile()">Drag and drop pre-sliced file or upload</div>
-                        <input type="file" class="file-input" id="file-upload" />
-                        <select class="dropdown" id="previous-files">
-                            <option value="">Use Previous G-code File</option>
-                            <option value="file1.gcode">file1.gcode</option>
-                            <option value="file2.gcode">file2.gcode</option>
-                        </select>
-                    </div>
-                    <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
-                    <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
-                    <button class="button" id="start-print">Start Print</button>
-                </div>
-                <div class="box">
-                    <p><strong>Time remaining:</strong> <span id="time-remaining">1 hour 53 minutes</span></p>
-                    <p><strong>Nozzle temp:</strong> <span id="nozzle-temp">45°C</span></p>
-                    <p><strong>Bed temp:</strong> <span id="bed-temp">145°C</span></p>
-                    <p class="progress"><span id="progress">45%</span> Print Completion</p>
-                    <button class="button" id="pause">Pause</button>
-                    <button class="button" id="stop">Stop</button>
-                </div>
+        <!-- Filament Status Panel -->
+        <div class="panel">
+            <h2>Filament Information</h2>
+            <p id="filamentStatus">Filament Type: PLA</p>
+            <p id="filamentAmount">Filament Remaining: 70%</p>
+        </div>
+
+        <!-- Print Progress Panel -->
+        <div class="panel">
+            <h2>Print Progress</h2>
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div class="action-buttons">
+                <button onclick="startPrint()">Start Print</button>
+                <button onclick="stopPrint()">Stop Print</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Password validation function
-        function checkPassword() {
-            const enteredPassword = document.getElementById('password-input').value;
-            const correctPassword = 'Ellis2010!';
+        // Printer status
+        let isPrinterOn = false;
+        let isPrinting = false;
+        let printProgress = 0;
+        
+        // Elements
+        const printerStatusElement = document.getElementById("printerStatus");
+        const filamentStatusElement = document.getElementById("filamentStatus");
+        const filamentAmountElement = document.getElementById("filamentAmount");
+        const progressBar = document.getElementById("progressBar");
 
-            if (enteredPassword === correctPassword) {
-                // If correct, show the dashboard content and hide the password prompt
-                document.getElementById('content').style.display = 'block';
-                document.getElementById('password-container').style.display = 'none';
+        // Update Printer Status
+        function updatePrinterStatus() {
+            if (isPrinterOn) {
+                printerStatusElement.textContent = "Printer is On";
+                printerStatusElement.classList.remove("off");
             } else {
-                // If incorrect, alert the user
-                alert('Incorrect password. Please try again.');
+                printerStatusElement.textContent = "Printer is Off";
+                printerStatusElement.classList.add("off");
             }
         }
 
-        // Function to upload the file
-        function uploadFile() {
-            const fileInput = document.getElementById('file-upload');
-            const file = fileInput.files[0];
+        // Toggle Printer On/Off
+        function togglePrinterStatus() {
+            isPrinterOn = !isPrinterOn;
+            updatePrinterStatus();
+        }
 
-            if (file) {
-                const formData = new FormData();
-                formData.append('file', file);
+        // Update filament info (dummy data)
+        function updateFilamentStatus() {
+            filamentStatusElement.textContent = "Filament Type: PLA";
+            filamentAmountElement.textContent = `Filament Remaining: ${Math.round(Math.random() * 100)}%`;
+        }
 
-                // Assuming you have a backend endpoint set up to handle the upload
-                fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => {
-                    if (response.ok) {
-                        alert('File uploaded successfully!');
-                    } else {
-                        alert('Upload failed.');
-                    }
-                });
+        // Start Print and simulate progress
+        function startPrint() {
+            if (isPrinterOn) {
+                isPrinting = true;
+                printProgress = 0;
+                updatePrintProgress();
+                simulatePrintProgress();
+            } else {
+                alert("Please turn on the printer first.");
             }
         }
 
-        // Event Listener for Start Print button
-        document.getElementById('start-print').addEventListener('click', function() {
-            // Send command to start the print via API
-            fetch('/start-print', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Print started!');
-                    updateStatus();
-                });
-        });
-
-        // Event Listener for Pause button
-        document.getElementById('pause').addEventListener('click', function() {
-            // Send command to pause the print via API
-            fetch('/pause-print', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Print paused!');
-                    updateStatus();
-                });
-        });
-
-        // Event Listener for Stop button
-        document.getElementById('stop').addEventListener('click', function() {
-            // Send command to stop the print via API
-            fetch('/stop-print', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Print stopped!');
-                    updateStatus();
-                });
-        });
-
-        // Function to update the printer status
-        function updateStatus() {
-            fetch('/status')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('time-remaining').innerText = data.timeRemaining;
-                    document.getElementById('nozzle-temp').innerText = data.nozzleTemp;
-                    document.getElementById('bed-temp').innerText = data.bedTemp;
-                    document.getElementById('progress').innerText = data.printProgress + '%';
-                });
+        // Stop Print
+        function stopPrint() {
+            isPrinting = false;
+            printProgress = 0;
+            updatePrintProgress();
+            alert("Print Stopped");
         }
+
+        // Simulate Print Progress
+        function simulatePrintProgress() {
+            if (isPrinting && printProgress < 100) {
+                printProgress += 1;
+                updatePrintProgress();
+                setTimeout(simulatePrintProgress, 100); // Simulate progress every 100ms
+            }
+        }
+
+        // Update Progress Bar
+        function updatePrintProgress() {
+            progressBar.style.width = `${printProgress}%`;
+        }
+
+        // Initialize the page with data
+        updatePrinterStatus();
+        updateFilamentStatus();
     </script>
+
 </body>
 </html>
