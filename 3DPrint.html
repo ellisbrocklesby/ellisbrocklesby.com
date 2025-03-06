@@ -3,180 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printer Control Panel</title>
+    <title>Creality Ender 3 Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            text-align: center;
+            background-color: white;
         }
         h1 {
             color: #333;
         }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .panel {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            min-width: 300px;
-            max-width: 400px;
-        }
-        .panel h2 {
-            color: #444;
-        }
         .status {
-            font-weight: bold;
+            font-size: 24px;
+        }
+        .connected {
             color: green;
         }
-        .status.off {
-            color: red;
-        }
-        .progress-bar-container {
-            position: relative;
-            height: 25px;
-            background-color: #ddd;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .progress-bar {
-            height: 100%;
-            background-color: #4caf50;
-            border-radius: 5px;
-            width: 0;
-        }
-        .action-buttons {
+        .container {
             display: flex;
-            gap: 10px;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
             margin-top: 20px;
         }
-        button {
-            padding: 10px;
-            font-size: 14px;
+        .info-boxes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .box {
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            width: 350px;
+            text-align: center;
+            background-color: white;
+        }
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .upload-box {
+            background-color: #ccc;
+            padding: 20px;
+            border-radius: 10px;
             cursor: pointer;
+        }
+        .dropdown {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #3498db;
+            width: 100%;
+            font-size: 16px;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #3498db;
+            color: white;
             border: none;
             border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
         }
-        button:hover {
-            background-color: #e7e7e7;
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .camera {
+            width: 900px;
+            height: 800px;
+            background-color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+        .progress {
+            font-size: 22px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-    <h1>3D Printer Control Panel</h1>
-
+    <h1>CREALITY</h1>
+    <p class="status">Ender 3: <span class="connected">Connected</span></p>
+    
     <div class="container">
-        <!-- Printer Status Panel -->
-        <div class="panel">
-            <h2>Printer Status</h2>
-            <p id="printerStatus" class="status">Printer is Off</p>
-            <div class="action-buttons">
-                <button onclick="togglePrinterStatus()">Turn On Printer</button>
-                <button onclick="togglePrinterStatus()">Turn Off Printer</button>
+        <div class="camera">Live View of Print</div>
+        <div class="info-boxes">
+            <div class="box">
+                <div class="upload-container">
+                    <div class="upload-box">Drag and drop pre-sliced file or upload</div>
+                    <select class="dropdown" id="previous-files">
+                        <option value="">Use Previous G-code File</option>
+                        <option value="file1.gcode">file1.gcode</option>
+                        <option value="file2.gcode">file2.gcode</option>
+                    </select>
+                </div>
+                <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
+                <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
+                <button class="button" id="start-print">Start Print</button>
             </div>
-        </div>
-
-        <!-- Filament Status Panel -->
-        <div class="panel">
-            <h2>Filament Information</h2>
-            <p id="filamentStatus">Filament Type: PLA</p>
-            <p id="filamentAmount">Filament Remaining: 70%</p>
-        </div>
-
-        <!-- Print Progress Panel -->
-        <div class="panel">
-            <h2>Print Progress</h2>
-            <div class="progress-bar-container">
-                <div id="progressBar" class="progress-bar"></div>
-            </div>
-            <div class="action-buttons">
-                <button onclick="startPrint()">Start Print</button>
-                <button onclick="stopPrint()">Stop Print</button>
+            <div class="box">
+                <p><strong>Time remaining:</strong> <span id="time-remaining">1 hour 53 minutes</span></p>
+                <p><strong>Nozzle temp:</strong> <span id="nozzle-temp">45°C</span></p>
+                <p><strong>Bed temp:</strong> <span id="bed-temp">145°C</span></p>
+                <p class="progress"><span id="progress">45%</span> Print Completion</p>
+                <button class="button" id="pause">Pause</button>
+                <button class="button" id="stop">Stop</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Printer status
-        let isPrinterOn = false;
-        let isPrinting = false;
-        let printProgress = 0;
-        
-        // Elements
-        const printerStatusElement = document.getElementById("printerStatus");
-        const filamentStatusElement = document.getElementById("filamentStatus");
-        const filamentAmountElement = document.getElementById("filamentAmount");
-        const progressBar = document.getElementById("progressBar");
+        const apiKey = "DWQNtwQ-3u_pXX7WqHDuDNAG0uDm6UWEaqWWbdJB52U";
+        const baseUrl = "http://<your_octopi_ip>/api/";
 
-        // Update Printer Status
-        function updatePrinterStatus() {
-            if (isPrinterOn) {
-                printerStatusElement.textContent = "Printer is On";
-                printerStatusElement.classList.remove("off");
-            } else {
-                printerStatusElement.textContent = "Printer is Off";
-                printerStatusElement.classList.add("off");
-            }
+        // Get the printer status and update the page
+        function getPrinterStatus() {
+            fetch(`${baseUrl}printer?apikey=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const status = data.state.text;
+                    document.querySelector(".status").innerHTML = `Ender 3: <span class="connected">${status}</span>`;
+                    // You can customize more printer details as per API response
+                });
         }
 
-        // Toggle Printer On/Off
-        function togglePrinterStatus() {
-            isPrinterOn = !isPrinterOn;
-            updatePrinterStatus();
+        // Update filament info (assuming response from API)
+        function getFilamentInfo() {
+            fetch(`${baseUrl}printer/tool?apikey=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const filamentUsage = data.tool0.actual; // Adjust based on actual API response
+                    document.getElementById("filament-use").textContent = `${filamentUsage}M | 500g`;
+                });
         }
 
-        // Update filament info (dummy data)
-        function updateFilamentStatus() {
-            filamentStatusElement.textContent = "Filament Type: PLA";
-            filamentAmountElement.textContent = `Filament Remaining: ${Math.round(Math.random() * 100)}%`;
-        }
-
-        // Start Print and simulate progress
-        function startPrint() {
-            if (isPrinterOn) {
-                isPrinting = true;
-                printProgress = 0;
+        // Start a print job
+        document.getElementById("start-print").addEventListener("click", () => {
+            // Simulate starting a print
+            fetch(`${baseUrl}job?apikey=${apiKey}`, {
+                method: "POST",
+                body: JSON.stringify({
+                    command: "start",
+                    file: {
+                        path: "path_to_your_file.gcode"
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Print started:", data);
                 updatePrintProgress();
-                simulatePrintProgress();
-            } else {
-                alert("Please turn on the printer first.");
-            }
-        }
+            });
+        });
 
-        // Stop Print
-        function stopPrint() {
-            isPrinting = false;
-            printProgress = 0;
-            updatePrintProgress();
-            alert("Print Stopped");
-        }
-
-        // Simulate Print Progress
-        function simulatePrintProgress() {
-            if (isPrinting && printProgress < 100) {
-                printProgress += 1;
-                updatePrintProgress();
-                setTimeout(simulatePrintProgress, 100); // Simulate progress every 100ms
-            }
-        }
-
-        // Update Progress Bar
+        // Update the print progress
         function updatePrintProgress() {
-            progressBar.style.width = `${printProgress}%`;
+            fetch(`${baseUrl}job?apikey=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const progress = data.progress.completion;
+                    document.getElementById("progress").textContent = `${progress}% Print Completion`;
+                    document.getElementById("time-remaining").textContent = data.progress.printTimeLeft;
+                });
         }
 
-        // Initialize the page with data
-        updatePrinterStatus();
-        updateFilamentStatus();
-    </script>
+        // Pause the print
+        document.getElementById("pause").addEventListener("click", () => {
+            fetch(`${baseUrl}job/pause?apikey=${apiKey}`, { method: "POST" })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Print paused:", data);
+                });
+        });
 
+        // Stop the print
+        document.getElementById("stop").addEventListener("click", () => {
+            fetch(`${baseUrl}job?apikey=${apiKey}`, {
+                method: "POST",
+                body: JSON.stringify({
+                    command: "cancel"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Print canceled:", data);
+            });
+        });
+
+        // Fetch camera live stream (or static image)
+        function getCameraStream() {
+            fetch(`${baseUrl}camera?apikey=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const cameraStreamUrl = data.stream; // Adjust based on actual response
+                    document.querySelector(".camera").innerHTML = `<img src="${cameraStreamUrl}" alt="Live Camera Stream" style="width: 100%; height: 100%; border-radius: 10px;">`;
+                });
+        }
+
+        // Initial setup and data fetching
+        window.onload = () => {
+            getPrinterStatus();
+            getFilamentInfo();
+            getCameraStream();
+            setInterval(updatePrintProgress, 10000); // Update progress every 10 seconds
+        };
+    </script>
 </body>
 </html>
