@@ -106,7 +106,7 @@
                     </select>
                 </div>
                 <p><strong>Print time:</strong> <span id="print-time">2 hours</span></p>
-                <p><strong>Filament use:</strong> <span id="filament-use">20M | 500g</span></p>
+                <p><strong>Filament use:</strong> <span id="filament-use">0M | 0g</span></p>
                 <button class="button" id="start-print">Start Print</button>
             </div>
             <div class="box">
@@ -131,7 +131,6 @@
                 .then(data => {
                     const status = data.state.text;
                     document.querySelector(".status").innerHTML = `Ender 3: <span class="connected">${status}</span>`;
-                    // You can customize more printer details as per API response
                 });
         }
 
@@ -142,18 +141,23 @@
                 .then(data => {
                     const filamentUsage = data.tool0.actual; // Adjust based on actual API response
                     document.getElementById("filament-use").textContent = `${filamentUsage}M | 500g`;
+                })
+                .catch(() => {
+                    document.getElementById("filament-use").textContent = "0M | 0g";
                 });
         }
 
         // Start a print job
         document.getElementById("start-print").addEventListener("click", () => {
-            // Simulate starting a print
+            const selectedFile = document.getElementById("previous-files").value;
+            const filePath = selectedFile ? selectedFile : "path_to_your_file.gcode"; // Default path if no file selected
+            
             fetch(`${baseUrl}job?apikey=${apiKey}`, {
                 method: "POST",
                 body: JSON.stringify({
                     command: "start",
                     file: {
-                        path: "path_to_your_file.gcode"
+                        path: filePath
                     }
                 })
             })
@@ -170,8 +174,14 @@
                 .then(response => response.json())
                 .then(data => {
                     const progress = data.progress.completion;
+                    const timeRemaining = data.progress.printTimeLeft;
+                    const nozzleTemp = data.temperature.tool0.actual;
+                    const bedTemp = data.temperature.bed.actual;
+                    
                     document.getElementById("progress").textContent = `${progress}% Print Completion`;
-                    document.getElementById("time-remaining").textContent = data.progress.printTimeLeft;
+                    document.getElementById("time-remaining").textContent = timeRemaining;
+                    document.getElementById("nozzle-temp").textContent = `${nozzleTemp}°C`;
+                    document.getElementById("bed-temp").textContent = `${bedTemp}°C`;
                 });
         }
 
