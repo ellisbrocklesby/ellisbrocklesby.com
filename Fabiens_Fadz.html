@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabien's Fades - In-School Barber</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .gallery img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .review {
+            background: #eee;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 5px solid #222;
+        }
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background: #222;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>Fabien's Fades - The Best In-School Barber</header>
+    
+    <div class="container">
+        <div class="section" id="booking">
+            <h2>Book a Haircut</h2>
+            <form action="mailto:ellisbrocklesby@gmail.com" method="post" enctype="text/plain">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="text" name="date" placeholder="Preferred Date & Time" required>
+                <textarea name="message" placeholder="Any special requests?"></textarea>
+                <button type="submit">Submit Booking</button>
+            </form>
+        </div>
+        
+        <div class="section" id="gallery">
+            <h2>Our Work</h2>
+            <div class="gallery">
+                <img src="https://via.placeholder.com/100" alt="Haircut 1">
+                <img src="https://via.placeholder.com/100" alt="Haircut 2">
+                <img src="https://via.placeholder.com/100" alt="Haircut 3">
+            </div>
+        </div>
+        
+        <div class="section" id="reviews">
+            <h2>What Our Clients Say</h2>
+            <div class="review">"Best haircut I've ever had!" - John Doe</div>
+            <div class="review">"Fabien is a legend, 10/10 fade!" - Mike Wazowski</div>
+            <div class="review">"I got a cut and now I'm famous!" - Tony Stark</div>
+        </div>
+        
+        <div class="section" id="contact">
+            <h2>Contact & Location</h2>
+            <p>📞 Phone: (123) 456-7890</p>
+            <p>📍 Address: 123 School Street, Barber Town</p>
+            <img src="https://via.placeholder.com/300x200" alt="School Location">
+        </div>
+    </div>
+</body>
+</html>
