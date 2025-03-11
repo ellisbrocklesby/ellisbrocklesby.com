@@ -5,75 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fabien's Fades - In-School Barber</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* General reset and body styling */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #3e2c23;
-            color: #fff;
+            box-sizing: border-box;
         }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #f1f1f1;
+        }
+        
+        /* Header Styling */
         header {
-            background: #8b5e3c;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
             color: white;
-            padding: 20px;
             text-align: center;
-            font-size: 24px;
+            padding: 40px 20px;
+            font-size: 36px;
             font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 5px solid #e74c3c;
         }
+        
+        /* Navigation styling */
         nav {
-            background: #6d4c3d;
-            padding: 10px;
-            text-align: center;
+            background: #2c3e50;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
         }
         nav a {
-            color: white;
+            color: #ecf0f1;
             text-decoration: none;
-            margin: 10px;
             font-size: 18px;
-            padding: 8px 12px;
-            background: #a67c52;
-            border-radius: 5px;
+            margin: 0 20px;
+            text-transform: uppercase;
+            padding: 10px;
+            border-radius: 25px;
+            transition: background 0.3s;
         }
+        nav a:hover {
+            background: #f39c12;
+        }
+
+        /* Container for content */
         .container {
-            width: 80%;
+            width: 85%;
             margin: auto;
-            padding: 20px;
+            padding: 30px 0;
         }
+
+        /* Section Styling */
         .section {
-            background: #5c3b29;
-            padding: 20px;
+            background-color: #34495e;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
             margin: 20px 0;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+        
+        .section h2 {
+            color: #f39c12;
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* Gallery styling */
+        .gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         .gallery img {
-            width: 100px;
-            height: 100px;
+            width: 180px;
+            height: 180px;
             object-fit: cover;
-            margin: 5px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Reviews section */
+        .review {
+            background: #7f8c8d;
+            padding: 20px;
+            margin: 10px 0;
+            border-left: 5px solid #f39c12;
             border-radius: 5px;
         }
-        .review {
-            background: #6d4c3d;
-            padding: 10px;
-            margin: 10px 0;
-            border-left: 5px solid #a67c52;
-        }
+
+        /* Booking form styling */
         form input, form textarea {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #a67c52;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #f39c12;
             border-radius: 5px;
+            background-color: #34495e;
+            color: #fff;
         }
+
         form button {
-            background: #a67c52;
+            background-color: #e74c3c;
             color: white;
-            padding: 10px;
+            padding: 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            transition: background-color 0.3s;
         }
+        form button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Footer contact section */
+        .contact-info p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .contact-info img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
         .center {
             text-align: center;
         }
@@ -91,11 +158,13 @@
     </nav>
     
     <div class="container">
+        <!-- About Section -->
         <div class="section center" id="about">
             <h2>About Us</h2>
             <p>Welcome to Fabien's Fades, the best in-school barber experience! Whether you need a fresh cut before class or just want to look sharp, we've got you covered.</p>
         </div>
         
+        <!-- Booking Section -->
         <div class="section" id="booking">
             <h2>Book a Haircut</h2>
             <form action="mailto:ellisbrocklesby@gmail.com" method="post" enctype="text/plain">
@@ -107,15 +176,17 @@
             </form>
         </div>
         
+        <!-- Gallery Section -->
         <div class="section" id="gallery">
             <h2>Our Work</h2>
             <div class="gallery center">
-                <img src="https://via.placeholder.com/100" alt="Haircut 1">
-                <img src="https://via.placeholder.com/100" alt="Haircut 2">
-                <img src="https://via.placeholder.com/100" alt="Haircut 3">
+                <img src="https://via.placeholder.com/200" alt="Haircut 1">
+                <img src="https://via.placeholder.com/200" alt="Haircut 2">
+                <img src="https://via.placeholder.com/200" alt="Haircut 3">
             </div>
         </div>
         
+        <!-- Reviews Section -->
         <div class="section" id="reviews">
             <h2>What Our Clients Say</h2>
             <div class="review">"Best haircut I've ever had!" - John Doe</div>
@@ -123,7 +194,8 @@
             <div class="review">"I got a cut and now I'm famous!" - Tony Stark</div>
         </div>
         
-        <div class="section" id="contact">
+        <!-- Contact Section -->
+        <div class="section contact-info" id="contact">
             <h2>Contact & Location</h2>
             <p>📞 Phone: (123) 456-7890</p>
             <p>📍 Address: 123 School Street, Barber Town</p>
