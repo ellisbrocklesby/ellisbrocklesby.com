@@ -1,131 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Printer Control</title>
-  <style>
-    body {
-      background-color: #1E3A8A;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .container {
-      text-align: center;
-    }
-    button {
-      background-color: #3B82F6;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    .status {
-      margin-top: 30px;
-    }
-    .camera {
-      margin-top: 50px;
-      background-color: #4CAF50;
-      padding: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printer Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .controls {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .camera {
+            width: 65%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .status {
+            margin-top: 20px;
+        }
+        .status span {
+            font-weight: bold;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ccc;
+            margin-top: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>3D Printer Dashboard</h1>
+<header>
+    <h1>3D Printer Control Panel</h1>
+</header>
 
-    <div class="status">
-      <h2>Printer Status</h2>
-      <p id="printer-status">Loading...</p>
-      <p id="temperature">Temperature: Loading...</p>
-      <p id="time-left">Time Left: Loading...</p>
-    </div>
-
+<div class="container">
+    <!-- Printer Controls -->
     <div class="controls">
-      <h3>Controls</h3>
-      <button onclick="startPrint()">Start Print</button>
-      <button onclick="pausePrint()">Pause Print</button>
-      <button onclick="stopPrint()">Stop Print</button>
+        <h2>Printer Controls</h2>
+        <input type="file" id="gcodeUpload" accept=".gcode" />
+        <button id="uploadGCode" onclick="uploadGCode()">Upload G-code</button>
+
+        <button id="startPrint" onclick="startPrint()">Start Print</button>
+        <button id="pausePrint" onclick="pausePrint()">Pause Print</button>
+        <button id="stopPrint" onclick="stopPrint()">Stop Print</button>
+        <button id="homePrinter" onclick="homePrinter()">Home Printer</button>
+        <button id="moveBed" onclick="moveBed()">Move Bed</button>
+
+        <div class="status">
+            <p><span>Temperature:</span> <span id="temperature">--</span>°C</p>
+            <p><span>Print Progress:</span> <span id="printProgress">--</span>%</p>
+            <p><span>Time Left:</span> <span id="timeLeft">--</span></p>
+        </div>
+
+        <div class="progress-bar">
+            <div id="progress" class="progress"></div>
+        </div>
     </div>
 
+    <!-- Webcam Feed -->
     <div class="camera">
-      <h3>Camera Feed</h3>
-      <!-- Embed the camera feed once it's available -->
-      <div id="camera-feed">Camera will be added here...</div>
+        <h2>Live Camera Feed</h2>
+        <img id="webcamStream" src="http://octopi.local/webcam/?action=stream" width="100%" alt="Webcam Stream" />
     </div>
-  </div>
+</div>
 
-  <script>
-    const apiUrl = 'http://192.168.1.8:5000/api/';  // HTTP version for local access
+<script>
+// API details
+const apiUrl = 'http://192.168.1.18/api/';
+const apiKey = 'eCsndgpGY6UURxVb6iqW0PKTZMkyEjJftv8URSxEwdU';
 
-    // Fetch printer status
-    async function fetchPrinterStatus() {
-      try {
-        const response = await fetch(apiUrl + 'printer');
-        const data = await response.json();
-        document.getElementById('printer-status').innerText = data.state.text;
-        document.getElementById('temperature').innerText = `Temperature: ${data.temperature.tool0.actual}°C`;
-        document.getElementById('time-left').innerText = `Time Left: ${data.progress.printTimeLeft / 60} min`;
-      } catch (error) {
-        console.error('Error fetching printer status:', error);
-      }
+// Function to send an API request
+async function sendApiRequest(endpoint, method = 'GET', data = null) {
+    const options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Api-Key': apiKey,
+        },
+    };
+    if (data) {
+        options.body = JSON.stringify(data);
     }
 
-    // Start print by uploading GCode
-    function startPrint() {
-      const formData = new FormData();
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = '.gcode';
-      fileInput.onchange = async function(event) {
-        const file = event.target.files[0];
-        if (file) {
-          formData.append('file', file);
-          try {
-            await fetch(apiUrl + 'files/local', {
-              method: 'POST',
-              body: formData
-            });
-            alert('Print started!');
-          } catch (error) {
-            console.error('Error starting print:', error);
-            alert('Failed to start print');
-          }
-        }
-      };
-      fileInput.click();
+    const response = await fetch(apiUrl + endpoint, options);
+    const result = await response.json();
+    return result;
+}
+
+// Upload G-code
+function uploadGCode() {
+    const fileInput = document.getElementById('gcodeUpload');
+    if (fileInput.files.length === 0) {
+        alert("Please select a G-code file.");
+        return;
     }
 
-    // Pause the print
-    async function pausePrint() {
-      try {
-        await fetch(apiUrl + 'printer/pause', { method: 'POST' });
-        alert('Print paused!');
-      } catch (error) {
-        console.error('Error pausing print:', error);
-        alert('Failed to pause print');
-      }
-    }
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
 
-    // Stop the print
-    async function stopPrint() {
-      try {
-        await fetch(apiUrl + 'printer/stop', { method: 'POST' });
-        alert('Print stopped!');
-      } catch (error) {
-        console.error('Error stopping print:', error);
-        alert('Failed to stop print');
-      }
-    }
+    fetch(apiUrl + 'files/local', {
+        method: 'POST',
+        headers: {
+            'X-Api-Key': apiKey,
+        },
+        body: formData,
+    }).then(response => response.json())
+      .then(data => alert("G-code uploaded successfully: " + data.filename))
+      .catch(error => alert("Error uploading G-code: " + error));
+}
 
-    // Fetch printer status every 5 seconds
-    setInterval(fetchPrinterStatus, 5000);
-    fetchPrinterStatus(); // Initial fetch
-  </script>
+// Start Print
+function startPrint() {
+    sendApiRequest('printer/command', 'POST', { command: 'start' })
+        .then(() => alert('Print Started'));
+}
+
+// Pause Print
+function pausePrint() {
+    sendApiRequest('printer/command', 'POST', { command: 'pause' })
+        .then(() => alert('Print Paused'));
+}
+
+// Stop Print
+function stopPrint() {
+    sendApiRequest('printer/command', 'POST', { command: 'cancel' })
+        .then(() => alert('Print Stopped'));
+}
+
+// Home Printer
+function homePrinter() {
+    sendApiRequest('printer/command', 'POST', { command: 'home' })
+        .then(() => alert('Printer Homed'));
+}
+
+// Move Bed (Just an example, adjust as per your needs)
+function moveBed() {
+    sendApiRequest('printer/command', 'POST', { command: 'move', x: 10, y: 10, z: 10 })
+        .then(() => alert('Bed Moved'));
+}
+
+// Update Printer Status
+function updatePrinterStatus() {
+    sendApiRequest('printer', 'GET')
+        .then(status => {
+            document.getElementById('temperature').textContent = status.temperature.tool0.actual;
+            document.getElementById('printProgress').textContent = status.progress.completion.toFixed(2);
+            document.getElementById('timeLeft').textContent = formatTime(status.progress.printTimeLeft);
+            document.getElementById('progress').style.width = status.progress.completion + '%';
+        });
+}
+
+// Format time (converts seconds to HH:MM:SS format)
+function formatTime(seconds) {
+    const date = new Date(seconds * 1000);
+    return date.toISOString().substr(11, 8);
+}
+
+// Update every 2 seconds
+setInterval(updatePrinterStatus, 2000);
+</script>
 
 </body>
 </html>
