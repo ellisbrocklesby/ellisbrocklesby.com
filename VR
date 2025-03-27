@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>VR Lightsaber Deflection Game</title>
+    <!-- A-Frame library -->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <!-- Optional: Include extras for controller models, if desired -->
+    <style>
+      body { margin: 0; overflow: hidden; }
+      /* Basic CSS for overlay menus */
+      #mainMenu, #gameOverMenu {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        color: #FFF;
+        padding: 20px;
+        text-align: center;
+        font-family: sans-serif;
+        border-radius: 10px;
+        z-index: 10;
+      }
+      button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+      #gameOverMenu { display: none; }
+    </style>
+  </head>
+  <body>
+    <!-- Main Menu -->
+    <div id="mainMenu">
+      <h1>Lightsaber Deflection</h1>
+      <button id="startButton">Start Game</button>
+      <br/>
+      <button id="settingsButton">Settings</button>
+      <button id="highScoresButton">High Scores</button>
+      <br/>
+      <button id="exitButton">Exit</button>
+    </div>
+    <!-- Game Over Screen -->
+    <div id="gameOverMenu">
+      <h2>Game Over</h2>
+      <p id="finalScore">Your Score: 0</p>
+      <button id="restartButton">Restart</button>
+      <button id="menuButton">Return to Menu</button>
+    </div>
+
+    <!-- A-Frame Scene -->
+    <a-scene id="scene" vr-mode-ui="enabled: true" embedded>
+      <!-- Assets can be defined here if using external models or sounds -->
+      <a-assets>
+        <!-- (Place your sound and model assets here) -->
+      </a-assets>
+
+      <!-- Camera Rig -->
+      <a-entity id="cameraRig" position="0 1.6 0">
+        <a-camera id="camera"></a-camera>
+      </a-entity>
+
+      <!-- Lightsaber attached to right-hand controller -->
+      <a-entity id="rightHand" laser-controls="hand: right" lightsaber>
+        <!-- The lightsaber blade (a simple box) -->
+        <a-box id="saber" position="0 0 -0.5" depth="1" height="0.1" width="0.1" color="#00FF00"></a-box>
+      </a-entity>
+
+      <!-- Floating Droid -->
+      <a-entity id="droid" geometry="primitive: sphere; radius: 0.3" material="color: gray" position="0 1.6 -3" random-movement></a-entity>
+
+      <!-- HUD (score, misses, saber color) attached in front of the camera -->
+      <a-entity id="hud" position="0 0 -2">
+        <a-text id="scoreText" value="Score: 0" color="#FFF" position="-0.8 0.3 0"></a-text>
+        <a-text id="missText" value="Misses Remaining: 3" color="#FFF" position="-0.8 0 0"></a-text>
+        <a-text id="colorText" value="Lightsaber: Green" color="#FFF" position="-0.8 -0.3 0"></a-text>
+      </a-entity>
+
+      <!-- Game Floor -->
+      <a-plane rotation="-90 0 0" width="20" height="20" color="#222"></a-plane>
+    </a-scene>
+
+    <script>
+      /* ----------------------------
+         Game State and Progression
+      ----------------------------- */
+      const gameState = {
+        score: 0,
+        misses: 0,
+        maxMisses: 3,
+        playing: false,
+        unlockedColors: JSON.parse(localStorage.getItem('unlockedColors')) || ['Green'],
+        currentColor: 'Green'
+      };
+
+      // Score milestones and corresponding lightsaber colors
+      const colorMilestones = [
+        { score: 10, color: 'Blue' },
+        { score: 25, color: 'Green' }, // Already have Green by default
+        { score: 50, color: 'Purple' },
+        { score: 100, color: 'Red' }
+      ];
+
+      /* ----------------------------
+         Utility: Update HUD
+      ----------------------------- */
+      function updateHUD() {
+        document.querySelector('#scoreText').setAttribute('value', 'Score: ' + gameState.score);
+        document.querySelector('#missText').setAttribute('value', 'Misses Remaining: ' + (gameState.maxMisses - gameState.misses));
+        document.querySelector('#colorText').setAttribute('value', 'Lightsaber: ' + gameState.currentColor);
+      }
+
+      /* ----------------------------
+         Component: Random Movement (Droid AI)
+      ----------------------------- */
+      AFRAME.registerComponent('random-movement', {
+        schema: {
+          speed: { type: 'number', default: 0.001 }
+        },
+        init: function () {
+          this.targetPosition = new THREE.Vector3();
+          this.el.object3D.position.set(0, 1.6, -3);
+          this.setNewTarget();
+        },
+        tick: function (time, delta) {
+          const pos = this.el.object3D.position;
+          pos.lerp(this.targetPosition, this.data.speed * delta);
+          // When close enough to target, choose a new target position
+          if (pos.distanceTo(this.targetPosition) < 0.1) {
+            this.setNewTarget();
+          }
+        },
+        setNewTarget: function () {
+          // Random positions within some bounds
+          this.targetPosition.set(
+            (Math.random() - 0.5) * 4,
+            1.0 + Math.random() * 1.0,
+            -3 + (Math.random() - 0.5) * 2
+          );
+        }
+      });
+
+      /* ----------------------------
+         Component: Blaster Bolt
+         Moves the bolt forward and checks for collision with the lightsaber.
+      ----------------------------- */
+      AFRAME.registerComponent('blaster', {
+        schema: {
+          speed: { type: 'number', default: 0.02 }
+        },
+        init: function () {
+          this.direction = new THREE.Vector3();
+          // Calculate initial direction: from droid towards the player’s camera position
+          const droidPos = new THREE.Vector3();
+          const cameraPos = new THREE.Vector3();
+          document.querySelector('#droid').object3D.getWorldPosition(droidPos);
+          document.querySelector('#camera').object3D.getWorldPosition(cameraPos);
+          this.direction.subVectors(cameraPos, droidPos).normalize();
+        },
+        tick: function (time, delta) {
+          // Move bolt
+          this.el.object3D.position.add(this.direction.clone().multiplyScalar(this.data.speed * delta));
+          // Check if bolt is too far away (missed)
+          if (this.el.object3D.position.distanceTo(document.querySelector('#camera').object3D.position) > 10) {
+            // Increment miss count and remove bolt
+            if (gameState.playing) {
+              gameState.misses++;
+              updateHUD();
+              checkGameOver();
+            }
+            this.el.parentNode.removeChild(this.el);
+          } else {
+            // Check collision with lightsaber
+            const saberEl = document.querySelector('#saber');
+            if (saberEl) {
+              const boltPos = new THREE.Vector3();
+              const saberPos = new THREE.Vector3();
+              this.el.object3D.getWorldPosition(boltPos);
+              saberEl.object3D.getWorldPosition(saberPos);
+              if (boltPos.distanceTo(saberPos) < 0.5) {
+                // Bolt deflected: increment score, update lightsaber color if milestone reached
+                if (gameState.playing) {
+                  gameState.score++;
+                  checkForMilestones();
+                  updateHUD();
+                }
+                this.el.parentNode.removeChild(this.el);
+              }
+            }
+          }
+        }
+      });
+
+      /* ----------------------------
+         Component: Lightsaber (for any additional effects)
+         (In this basic version, the lightsaber is simply a visual attached to the controller.)
+      ----------------------------- */
+      AFRAME.registerComponent('lightsaber', {
+        init: function () {
+          // Future enhancements (sound effects, glow, etc.) can be added here.
+        }
+      });
+
+      /* ----------------------------
+         Spawning Blaster Bolts from Droid
+      ----------------------------- */
+      let boltInterval;
+      function startSpawningBolts() {
+        boltInterval = setInterval(() => {
+          if (!gameState.playing) return;
+          // Create a new bolt entity at the droid's position
+          const bolt = document.createElement('a-sphere');
+          bolt.setAttribute('radius', '0.1');
+          bolt.setAttribute('color', '#FF0000');
+          // Start at the droid's current position
+          const droid = document.querySelector('#droid');
+          const pos = droid.getAttribute('position');
+          bolt.setAttribute('position', pos);
+          bolt.setAttribute('blaster', '');
+          // Add the bolt to the scene
+          document.querySelector('a-scene').appendChild(bolt);
+        }, 2000); // fire every 2 seconds; can be adjusted or made a setting
+      }
+
+      /* ----------------------------
+         Game Over Check
+      ----------------------------- */
+      function checkGameOver() {
+        if (gameState.misses >= gameState.maxMisses) {
+          gameState.playing = false;
+          clearInterval(boltInterval);
+          // Show game over menu with final score
+          document.getElementById('finalScore').innerText = 'Your Score: ' + gameState.score;
+          document.getElementById('gameOverMenu').style.display = 'block';
+        }
+      }
+
+      /* ----------------------------
+         Unlock Lightsaber Colors at Milestones
+      ----------------------------- */
+      function checkForMilestones() {
+        colorMilestones.forEach(milestone => {
+          if (gameState.score === milestone.score) {
+            // If not already unlocked, add new color
+            if (!gameState.unlockedColors.includes(milestone.color)) {
+              gameState.unlockedColors.push(milestone.color);
+              localStorage.setItem('unlockedColors', JSON.stringify(gameState.unlockedColors));
+              // Change current lightsaber color for feedback
+              gameState.currentColor = milestone.color;
+              // Update lightsaber visual (the box attached to controller)
+              document.querySelector('#saber').setAttribute('color', milestone.color.toLowerCase());
+            }
+          }
+        });
+      }
+
+      /* ----------------------------
+         Button Listeners & Game Flow Control
+      ----------------------------- */
+      document.getElementById('startButton').addEventListener('click', () => {
+        // Start game: reset state, hide menu, start bolt spawning
+        gameState.score = 0;
+        gameState.misses = 0;
+        gameState.playing = true;
+        gameState.currentColor =
+        gameState.currentColor = 'Green'; // Default starting color
+        updateHUD();
+        document.getElementById('mainMenu').style.display = 'none';
+        document.getElementById('gameOverMenu').style.display = 'none';
+        startSpawningBolts();
+      });
+
+      document.getElementById('restartButton').addEventListener('click', () => {
+        // Restart the game with fresh state
+        gameState.score = 0;
+        gameState.misses = 0;
+        gameState.playing = true;
+        gameState.currentColor = 'Green';
+        updateHUD();
+        document.getElementById('gameOverMenu').style.display = 'none';
+        startSpawningBolts();
+      });
+
+      document.getElementById('menuButton').addEventListener('click', () => {
+        // Return to main menu
+        gameState.playing = false;
+        gameState.score = 0;
+        gameState.misses = 0;
+        updateHUD();
+        clearInterval(boltInterval);
+        document.getElementById('mainMenu').style.display = 'block';
+      });
+
+      document.getElementById('exitButton').addEventListener('click', () => {
+        // Exit the game (close the browser window or navigate away)
+        window.close();
+      });
+
+      /* ----------------------------
+         Init Game on Load
+      ----------------------------- */
+      window.addEventListener('load', () => {
+        // Show main menu when the game is first loaded
+        document.getElementById('mainMenu').style.display = 'block';
+      });
+    </script>
+  </body>
+</html>
