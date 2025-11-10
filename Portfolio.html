@@ -54,11 +54,14 @@
     .carousel video {
       width: 100%;
       display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .carousel img.active,
     .carousel video.active {
       display: block;
+      opacity: 1;
     }
 
     .carousel button {
@@ -73,6 +76,7 @@
       cursor: pointer;
       font-size: 18px;
       color: #333;
+      z-index: 2;
     }
 
     .carousel button:hover {
@@ -168,6 +172,7 @@
       height: 40px;
       font-size: 24px;
       cursor: pointer;
+      z-index: 101;
     }
 
     .close-btn:hover {
@@ -230,7 +235,8 @@
     const fullscreenContent = document.getElementById("fullscreenContent");
     const closeBtn = document.getElementById("closeBtn");
 
-    posts.forEach((post, index) => {
+    // Create feed posts
+    posts.forEach((post) => {
       const div = document.createElement("div");
       div.classList.add("post");
 
@@ -238,47 +244,14 @@
       carousel.classList.add("carousel");
 
       post.media.forEach((item, i) => {
-        let element;
-        if (item.type === "image") {
-          element = document.createElement("img");
-          element.src = item.src;
-        } else if (item.type === "video") {
-          element = document.createElement("video");
-          element.src = item.src;
-          element.controls = true;
-        }
+        const element = document.createElement(item.type === "image" ? "img" : "video");
+        element.src = item.src;
+        if (item.type === "video") element.controls = true;
         if (i === 0) element.classList.add("active");
         carousel.appendChild(element);
       });
 
-      if (post.media.length > 1) {
-        const prev = document.createElement("button");
-        const next = document.createElement("button");
-        prev.classList.add("prev");
-        next.classList.add("next");
-        prev.textContent = "‹";
-        next.textContent = "›";
-        carousel.appendChild(prev);
-        carousel.appendChild(next);
-
-        let current = 0;
-        const mediaElements = carousel.querySelectorAll("img, video");
-
-        const showMedia = (n) => {
-          mediaElements[current].classList.remove("active");
-          current = (n + mediaElements.length) % mediaElements.length;
-          mediaElements[current].classList.add("active");
-        };
-
-        prev.addEventListener("click", (e) => {
-          e.stopPropagation();
-          showMedia(current - 1);
-        });
-        next.addEventListener("click", (e) => {
-          e.stopPropagation();
-          showMedia(current + 1);
-        });
-      }
+      if (post.media.length > 1) createCarouselControls(carousel);
 
       const info = document.createElement("div");
       info.classList.add("info");
@@ -288,59 +261,61 @@
       div.appendChild(info);
       feed.appendChild(div);
 
-      // Click post to open fullscreen
       div.addEventListener("click", () => openFullscreen(post));
     });
 
+    // Create carousel controls
+    function createCarouselControls(carousel) {
+      const prev = document.createElement("button");
+      const next = document.createElement("button");
+      prev.classList.add("prev");
+      next.classList.add("next");
+      prev.textContent = "‹";
+      next.textContent = "›";
+      carousel.appendChild(prev);
+      carousel.appendChild(next);
+
+      let current = 0;
+      const mediaElements = carousel.querySelectorAll("img, video");
+
+      const showMedia = (n) => {
+        mediaElements[current].classList.remove("active");
+        current = (n + mediaElements.length) % mediaElements.length;
+        mediaElements[current].classList.add("active");
+      };
+
+      prev.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showMedia(current - 1);
+      });
+      next.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showMedia(current + 1);
+      });
+    }
+
+    // Fullscreen post
     function openFullscreen(post) {
       fullscreenContent.innerHTML = "";
-
       const mediaContainer = document.createElement("div");
       mediaContainer.classList.add("carousel");
 
       post.media.forEach((item, i) => {
-        let element;
-        if (item.type === "image") {
-          element = document.createElement("img");
-          element.src = item.src;
-        } else {
-          element = document.createElement("video");
-          element.src = item.src;
-          element.controls = true;
-        }
+        const element = document.createElement(item.type === "image" ? "img" : "video");
+        element.src = item.src;
+        if (item.type === "video") element.controls = true;
         if (i === 0) element.classList.add("active");
         mediaContainer.appendChild(element);
       });
 
-      if (post.media.length > 1) {
-        const prev = document.createElement("button");
-        const next = document.createElement("button");
-        prev.classList.add("prev");
-        next.classList.add("next");
-        prev.textContent = "‹";
-        next.textContent = "›";
-        mediaContainer.appendChild(prev);
-        mediaContainer.appendChild(next);
+      if (post.media.length > 1) createCarouselControls(mediaContainer);
 
-        let current = 0;
-        const mediaElements = mediaContainer.querySelectorAll("img, video");
-        const showMedia = (n) => {
-          mediaElements[current].classList.remove("active");
-          current = (n + mediaElements.length) % mediaElements.length;
-          mediaElements[current].classList.add("active");
-        };
-        prev.addEventListener("click", (e) => {
-          e.stopPropagation();
-          showMedia(current - 1);
-        });
-        next.addEventListener("click", (e) => {
-          e.stopPropagation();
-          showMedia(current + 1);
-        });
-      }
+      const info = document.createElement("div");
+      info.innerHTML = `<h2>${post.title}</h2><p>${post.description}</p>`;
 
       fullscreenContent.appendChild(mediaContainer);
-      fullscreenContent.innerHTML += `<h2>${post.title}</h2><p>${post.description}</p>`;
+      fullscreenContent.appendChild(info);
+
       fullscreen.classList.add("active");
     }
 
