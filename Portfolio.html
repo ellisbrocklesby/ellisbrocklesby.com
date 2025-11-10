@@ -36,6 +36,12 @@
       border-radius: 8px;
       margin-bottom: 2rem;
       overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .post:hover {
+      transform: scale(1.01);
     }
 
     .carousel {
@@ -104,9 +110,79 @@
       color: #777;
     }
 
+    /* Fullscreen viewer */
+    .fullscreen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .fullscreen.active {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .fullscreen-content {
+      max-width: 90%;
+      max-height: 80%;
+      text-align: center;
+      position: relative;
+    }
+
+    .fullscreen img,
+    .fullscreen video {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 10px;
+    }
+
+    .fullscreen h2 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    .fullscreen p {
+      max-width: 600px;
+      margin: 0 auto;
+      color: #ddd;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.8);
+      color: #000;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background: #fff;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
     @media (max-width: 600px) {
       header { font-size: 1.3rem; }
       .carousel button { width: 30px; height: 30px; font-size: 16px; }
+      .fullscreen-content { max-width: 95%; }
     }
   </style>
 </head>
@@ -114,6 +190,11 @@
   <header>Ellis Brocklesby – CGI Portfolio</header>
 
   <div class="feed" id="feed"></div>
+
+  <div class="fullscreen" id="fullscreen">
+    <button class="close-btn" id="closeBtn">&times;</button>
+    <div class="fullscreen-content" id="fullscreenContent"></div>
+  </div>
 
   <footer>© 2025 Ellis Brocklesby. All rights reserved.</footer>
 
@@ -145,12 +226,14 @@
     ];
 
     const feed = document.getElementById("feed");
+    const fullscreen = document.getElementById("fullscreen");
+    const fullscreenContent = document.getElementById("fullscreenContent");
+    const closeBtn = document.getElementById("closeBtn");
 
     posts.forEach((post, index) => {
       const div = document.createElement("div");
       div.classList.add("post");
 
-      // Carousel
       const carousel = document.createElement("div");
       carousel.classList.add("carousel");
 
@@ -187,21 +270,86 @@
           mediaElements[current].classList.add("active");
         };
 
-        prev.addEventListener("click", () => showMedia(current - 1));
-        next.addEventListener("click", () => showMedia(current + 1));
+        prev.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showMedia(current - 1);
+        });
+        next.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showMedia(current + 1);
+        });
       }
 
-      // Info
       const info = document.createElement("div");
       info.classList.add("info");
-      info.innerHTML = `
-        <h2>${post.title}</h2>
-        <p>${post.description}</p>
-      `;
+      info.innerHTML = `<h2>${post.title}</h2><p>${post.description}</p>`;
 
       div.appendChild(carousel);
       div.appendChild(info);
       feed.appendChild(div);
+
+      // Click post to open fullscreen
+      div.addEventListener("click", () => openFullscreen(post));
+    });
+
+    function openFullscreen(post) {
+      fullscreenContent.innerHTML = "";
+
+      const mediaContainer = document.createElement("div");
+      mediaContainer.classList.add("carousel");
+
+      post.media.forEach((item, i) => {
+        let element;
+        if (item.type === "image") {
+          element = document.createElement("img");
+          element.src = item.src;
+        } else {
+          element = document.createElement("video");
+          element.src = item.src;
+          element.controls = true;
+        }
+        if (i === 0) element.classList.add("active");
+        mediaContainer.appendChild(element);
+      });
+
+      if (post.media.length > 1) {
+        const prev = document.createElement("button");
+        const next = document.createElement("button");
+        prev.classList.add("prev");
+        next.classList.add("next");
+        prev.textContent = "‹";
+        next.textContent = "›";
+        mediaContainer.appendChild(prev);
+        mediaContainer.appendChild(next);
+
+        let current = 0;
+        const mediaElements = mediaContainer.querySelectorAll("img, video");
+        const showMedia = (n) => {
+          mediaElements[current].classList.remove("active");
+          current = (n + mediaElements.length) % mediaElements.length;
+          mediaElements[current].classList.add("active");
+        };
+        prev.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showMedia(current - 1);
+        });
+        next.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showMedia(current + 1);
+        });
+      }
+
+      fullscreenContent.appendChild(mediaContainer);
+      fullscreenContent.innerHTML += `<h2>${post.title}</h2><p>${post.description}</p>`;
+      fullscreen.classList.add("active");
+    }
+
+    closeBtn.addEventListener("click", () => fullscreen.classList.remove("active"));
+    fullscreen.addEventListener("click", (e) => {
+      if (e.target === fullscreen) fullscreen.classList.remove("active");
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") fullscreen.classList.remove("active");
     });
   </script>
 </body>
