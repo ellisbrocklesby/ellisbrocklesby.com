@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ellis Harris-Brocklesby is a New Zealand student, CGI artist, VFX creator, CAD designer and technology enthusiast. View projects, hobbies, portfolio work and contact information.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "#ellis",
+      "name": "Ellis Harris-Brocklesby",
+      "alternateName": "Ellis Brocklesby",
+      "image": "assets/head shot.jpeg",
+      "jobTitle": "CGI Artist, VFX Artist, CAD Designer, Student",
+      "description": "New Zealand student focused on CGI, VFX, CAD design, animation, and 3D development using Blender and related tools.",
+      "birthDate": "2010-04-08",
+      "nationality": "New Zealand",
+
+      "knowsAbout": [
+        "Blender 3D",
+        "Visual Effects (VFX)",
+        "Computer Generated Imagery (CGI)",
+        "CAD Design",
+        "3D Modelling",
+        "Animation",
+        "FPV Drones",
+        "Linux",
+        "Mechatronics",
+        "Engineering",
+        "Speed Cubing",
+        "Karate"
+      ],
+
+      "knows": [
+        "Fabien Brocklesby",
+        "Chris Brocklesby"
+      ],
+
+      "affiliation": {
+        "@type": "EducationalOrganization",
+        "name": "Waimea College"
+      },
+
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Waimea College"
+      },
+
+      "sameAs": [
+        "https://www.instagram.com/ellisbrocklesby3d/",
+        "https://www.youtube.com/@EllisBrocklesby3D",
+        "https://www.instagram.com/hbcubing/",
+        "https://www.instagram.com/ellisdoeskarate/",
+        "https://www.instagram.com/fpv_broccoli/",
+        "https://brocklesby.gumroad.com/"
+      ]
+    },
+
+    {
+      "@type": "WebSite",
+      "@id": "#website",
+      "name": "Ellis Brocklesby Portfolio",
+      "url": "",
+      "creator": {
+        "@id": "#ellis"
+      },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+
+<title>Ellis Brocklesby | About Me</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- BACKGROUND LAYERS -->
+<div class="bg-gradient"></div>
+<div class="bg-noise"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="logo">ELLIS BROCKLESBY</div>
+
+  <div class="nav-right">
+    <nav class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#education">Education</a>
+      <a href="#hobbies">Hobbies</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <button id="settingsToggle" class="settings-toggle" aria-label="Open settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M19.14 12.936a7.994 7.994 0 000-1.872l2.03-1.578a.5.5 0 00.12-.641l-1.922-3.327a.5.5 0 00-.607-.22l-2.39.96a7.03 7.03 0 00-1.62-.936l-.36-2.54A.5.5 0 0012.99 2h-1.98a.5.5 0 00-.495.424l-.36 2.54a7.03 7.03 0 00-1.62.936l-2.39-.96a.5.5 0 00-.607.22L2.69 7.486a.5.5 0 00.12.641l2.03 1.578a7.994 7.994 0 000 1.872L2.81 14.71a.5.5 0 00-.12.641l1.922 3.327a.5.5 0 00.607.22l2.39-.96c.522.408 1.05.711 1.62.936l.36 2.54a.5.5 0 00.495.424h1.98a.5.5 0 00.495-.424l.36-2.54c.57-.225 1.098-.528 1.62-.936l2.39.96a.5.5 0 00.607-.22l1.922-3.327a.5.5 0 00-.12-.641l-2.03-1.578zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg>
+    </button>
+    <button class="nav-toggle" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<!-- Settings panel -->
+<div id="settingsPanel" class="settings-panel" hidden>
+  <div class="settings-inner glass">
+    <button id="settingsClose" class="settings-close" aria-label="Close settings">✕</button>
+    <h4>Settings</h4>
+    <div class="setting-row">
+      <label for="themeToggle">Light mode</label>
+      <input id="themeToggle" type="checkbox" aria-label="Toggle light mode">
+    </div>
+    <div class="setting-row">
+      <label for="disableAnimationsToggle">Disable animations</label>
+      <input id="disableAnimationsToggle" type="checkbox" aria-label="Disable site animations">
+    </div>
+    <div class="setting-row">
+      <label for="muteToggleSettings">Mute videos</label>
+      <input id="muteToggleSettings" type="checkbox" aria-label="Mute site videos">
+    </div>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section id="hero" class="hero">
+  <div class="hero-content">
+
+    <div class="hero-top">
+      <h1>VFX • CGI • CAD Artist</h1>
+      <p class="tagline">Building worlds in Blender, Bringing ideas to life.</p>
+    </div>
+
+    <div class="profile-card glass">
+      <div class="avatar-wrap">
+        <img src="assets/head%20shot.jpeg" alt="E" class="avatar" onload="(function(){var f=this.parentNode.querySelector('.avatar-fallback'); if(f) f.style.display='none';})();" onerror="(function(){this.style.display='none';var f=this.parentNode.querySelector('.avatar-fallback'); if(f) f.style.display='flex';})();">
+        <div class="avatar-fallback">E</div>
+      </div>
+      <div class="profile-info">
+        <strong>Ellis Harris-Brocklesby</strong>
+        <p class="lorem">
+          I focus on 3D, VFX, and CAD, working with Blender, simulations, and modelling, aiming for a career in CGI and visual effects.
+        </p>
+        <div class="hero-buttons">
+          <button onclick="scrollToSection('work')">View Work</button>
+          <button onclick="scrollToSection('contact')">Contact</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-glow"></div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="section glass">
+  <h2>About</h2>
+  <p class="lorem">
+    I am a student focused on developing skills in CGI, VFX, CAD, and technical design. My work combines creative thinking with problem solving, especially in areas like simulation, modelling, and animation. I enjoy learning how real systems work and recreating them digitally in Blender and other tools.
+  </p>
+</section>
+
+<!-- ================= WORK ================= -->
+<section id="work" class="section">
+  <h2>Showcase — CGI / VFX / CAD</h2>
+
+  <div class="showcase glass">
+    <div class="showcase-main media-viewer" aria-roledescription="portfolio media viewer">
+      <div class="media-stage">
+        <button class="media-arrow prev" aria-label="Previous">◀</button>
+        <div class="media-slides" id="mediaSlides" tabindex="0"></div>
+        <button class="media-arrow next" aria-label="Next">▶</button>
+      </div>
+      <div class="media-controls">
+        <div class="media-dots" id="mediaDots"></div>
+      </div>
+    </div>
+
+    <div class="showcase-side">
+      <div style="padding:16px">
+        <h3>Showcase</h3>
+        <p class="lorem">
+          This section represents my experimental work in CGI, animation, and CAD modelling. Projects often include simulations, environment builds, and mechanical designs where I focus on both visual quality and technical accuracy.
+        </p>
+        <p class="lorem">
+          I usually develop projects by testing ideas in small stages, refining materials, lighting, and motion until the final result feels realistic and intentional.
+        </p>
+        <div class="showcase-social" style="margin-top:10px;display:flex;gap:8px">
+          <a class="btn-ghost social-ig" href="https://www.instagram.com/ellisbrocklesby3d/" target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.2"/><circle cx="17.5" cy="6.5" r="0.7" fill="currentColor"/></svg>
+            <span>Instagram</span>
+          </a>
+          <a class="btn-ghost social-yt" href="https://www.youtube.com/@EllisBrocklesby3D" target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 15l5.2-3L10 9v6z" fill="currentColor"/><rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+            <span>YouTube</span>
+          </a>
+          <a id="supportBtn" class="btn-primary" href="https://brocklesby.gumroad.com/" target="_blank" rel="noopener noreferrer" style="margin-left:8px">Support me!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education" class="section glass">
+  <h2>Education</h2>
+
+  <div class="timeline">
+    <div class="dot">Level 2 NZQA</div>
+    <div class="dot">Tech Focus: VFX + Design</div>
+    <div class="dot">Future: Advanced CGI / Industry Pathway</div>
+  </div>
+</section>
+
+<!-- ================= HOBBIES ================= -->
+<section id="hobbies" class="section">
+  <h2>Hobbies</h2>
+
+  <div id="hobbiesGrid" class="grid hobbies-grid" data-source="assets/data/hobbies.json">
+    <!-- Hobby tiles are rendered from `assets/data/hobbies.json`.
+         Edit that file to change titles, descriptions and optional `image` paths.
+         Example entry: { "title": "PC Building", "content": "Building custom PCs...", "image": "assets/hobbies/pc.jpg" }
+    -->
+  </div>
+ <script id="hobbiesData" type="application/json">
+  [
+    {
+      "title": "PC Building",
+      "content": "Building and upgrading PCs has become one of my favourite hobbies. I enjoy researching parts, comparing performance, improving airflow, and putting together systems that are both powerful and reliable. Over time I have upgraded and customised my own PC, learning about hardware compatibility, cooling, troubleshooting, and getting the most performance out of a system.",
+      "image": "assets/hobbies/WhatsApp Image 2026-05-22 at 3.40.52 PM.jpeg",
+      "specs": [
+        "CPU: AMD Ryzen 5 5600X",
+        "GPU: RTX 5070 OC (Gigabyte)",
+        "RAM: 48GB DDR4 3200MHz",
+        "Boot: 1TB NVMe SSD",
+        "Storage: 1TB HDD, 500GB HDD",
+        "Case: Deepcool CG530",
+        "PSU: 750W Bronze",
+        "Cooler: Cooler Master 2-fan AIO",
+        "OS: Windows 11"
+      ]
+    },
+    {
+      "title": "Servers & Linux",
+      "content": "I enjoy experimenting with Linux and self-hosted services. Most of my experience comes from running Linux on my laptop and setting up projects that help me learn more about operating systems, networking, and automation. I like exploring how computers work behind the scenes and finding new ways to customise and improve my setup.",
+      "image": "assets/hobbies/14-141701_linux-tux-penguin-linux-logo-png.png"
+    },
+    {
+      "title": "Speed Cubing",
+      "content": "Although I don't speed cube as much anymore, it is still a hobby I enjoy. It is always satisfying to pick up a cube and solve it. I have competed at WCA competitions before, with a personal best of 9.48 seconds on 3x3. While I am not as focused on improving my times these days, speed cubing taught me patience, consistency, and problem-solving skills that I still use today.",
+      "image": "assets/hobbies/1656387005.jpeg",
+      "instagram": "https://www.instagram.com/hbcubing/",
+      "youtube": "https://www.youtube.com/@HB_cubing"
+    },
+    {
+      "title": "3D Printing",
+      "content": "3D printing allows me to turn ideas into real objects. I enjoy designing parts in CAD, testing prototypes, and learning how different print settings affect the final result. I have created functional parts, custom designs, and projects that combine 3D printing with electronics and engineering.",
+      "image": "assets/hobbies/Screenshot 2026-06-20 230514.png"
+    },
+    {
+      "title": "Karate",
+      "content": "I have been training in Seido Karate for around six years and am currently a brown belt. Karate has taught me discipline, confidence, and perseverance. I particularly enjoy kicks and kata, where I can focus on improving technique, balance, timing, and precision. Training regularly has helped me become more focused both inside and outside the dojo.",
+      "image": "assets/hobbies/Screenshot 2026-06-20 230252.png",
+      "instagram": "https://www.instagram.com/ellisdoeskarate/"
+    },
+    {
+      "title": "FPV / Drones",
+      "content": "FPV drones combine many of my interests, including engineering, electronics, videography, and problem-solving. I enjoy building drones, tuning flight controllers, troubleshooting issues, and experimenting with different setups. I have worked on projects involving FPV systems, long-range concepts, drone automation, and cinematic flying, making this one of my most hands-on hobbies.",
+      "image": "assets/hobbies/Screenshot 2026-06-20 224740.png",
+      "instagram": "https://www.instagram.com/fpv_broccoli/",
+      "youtube": "https://www.youtube.com/@FPV_Broccoli"
+    },
+    {
+      "title": "Mechatronics / Engineering",
+      "content": "I enjoy creating projects that combine mechanical design, electronics, and programming. This includes working with CAD, sensors, Raspberry Pi systems, automation projects, and prototype development. Mechatronics is one of the areas that has inspired my interest in technology and problem-solving, and I enjoy finding practical solutions to technical challenges.",
+      "image": "assets/hobbies/mechatronics.jpg"
+    }
+  ]
+</script>
+<br><br>
+
+<!-- Modal / overlay for hobby details -->
+<div id="overlay" class="overlay" hidden></div>
+<div id="modal" class="modal" role="dialog" aria-modal="true" hidden>
+  <button id="modalClose" class="modal-close" aria-label="Close">✕</button>
+  <h3 id="modalTitle"></h3>
+  <div id="modalContent"></div>
+</div>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="section glass">
+  <h2>Contact</h2>
+
+  <div class="contact-grid">
+    <form id="contactForm" class="contact-form" autocomplete="on">
+      <label for="fromEmail">Your email</label>
+      <input id="fromEmail" name="fromEmail" type="email" placeholder="you@domain.com" required>
+
+      <label for="subject">Subject</label>
+      <input id="subject" name="subject" type="text" placeholder="Brief subject" required>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" placeholder="Type your message here" required></textarea>
+
+      <div class="contact-actions">
+        <button type="submit" class="btn-primary">Send via email</button>
+      </div>
+
+    </form>
+
+    <aside class="contact-aside">
+      <h3>Social</h3>
+      <div class="social-links">
+        <a class="social" href="#" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.2"/><circle cx="17.5" cy="6.5" r="0.7" fill="currentColor"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a class="social" href="#" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 8h2V5h-2c-1.1 0-2 .9-2 2v1H11v3h2v6h3v-6h2l1-3h-3V7c0-.55.45-1 1-1z" fill="currentColor"/></svg>
+          <span>Facebook</span>
+        </a>
+        <a class="social" href="#" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 15l5.2-3L10 9v6z" fill="currentColor"/><rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+          <span>YouTube</span>
+        </a>
+      </div>
+
+      <p class="small">Or send manually to <a href="mailto:contact@ellisbrocklesby.com">contact@ellisbrocklesby.com</a></p>
+    </aside>
+  </div>
+
+</section>
+
+<footer>
+  <p>© Ellis Brocklesby <span id="year"></span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
