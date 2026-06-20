@@ -1,0 +1,38 @@
+[
+  {
+    "title": "PC Building",
+    "image": "assets/hobbies/cube.jpg",
+    "link": "https://www.worldcubeassociation.org/persons/2022HARR08"
+    "image": "assets/hobbies/pc.jpg"
+  },
+  {
+    "title": "Servers & Linux",
+    "content": "Home labs, Linux servers, networking and container setups.",
+    "image": "assets/hobbies/servers.jpg"
+  },
+  {
+    "title": "Speed Cubing",
+    "content": "Competitive cubing and algorithms practice.",
+    "image": "assets/hobbies/cube.jpg"
+  },
+  {
+    "title": "3D Printing",
+    "content": "Designing and printing functional parts and prototypes.",
+    "image": "assets/hobbies/3dprint.jpg"
+  },
+  {
+    "title": "Karate",
+    "content": "Training and discipline in martial arts.",
+    "image": "assets/hobbies/karate.jpg"
+  },
+  {
+    "title": "FPV / Drones",
+    "content": "First-person view drone flying, builds, and tuning.",
+    "image": "assets/hobbies/fpv.jpg"
+  },
+  {
+    "title": "Mechatronics / Engineering",
+    "content": "Embedded systems, sensors, and mechanical prototyping.",
+    "image": "assets/hobbies/mechatronics.jpg"
+  }
+]
