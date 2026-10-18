@@ -454,6 +454,7 @@ document.addEventListener('click', (e)=>{
       slide.dataset.index = i;
       if(it.type === 'video'){
         const v = document.createElement('video'); v.src = encodeURI(it.src); v.muted = true; v.loop = false; v.playsInline = true; v.preload = 'metadata'; v.controls = false;
+        v.addEventListener('error', () => { if (parseInt(slide.dataset.index, 10) === index && autoplay) next(); }, { once: true });
         slide.appendChild(v);
       } else {
         const img = document.createElement('img'); img.src = encodeURI(it.src); img.alt = it.name || ('media-'+i);
@@ -533,7 +534,8 @@ document.addEventListener('click', (e)=>{
   items = [
     { src: 'assets/portfolio/best eye.png', type: 'image', name: 'best eye.png' },
     { src: 'assets/portfolio/Screenshot 2026-06-20 151058.png', type: 'image', name: 'screenshot' },
-    { src: 'assets/portfolio/Star wars.mp4', type: 'video', name: 'star wars' },
+    // Star Wars slideshow clip: ensure StarWarss.mp4 exists in assets/portfolio/.
+    { src: 'assets/portfolio/StarWarss.mp4', type: 'video', name: 'star wars' },
     { src: 'assets/portfolio/bed.mp4', type: 'video', name: 'bed' }
   ];
   render(); goTo(index);
